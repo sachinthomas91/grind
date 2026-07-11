@@ -163,9 +163,13 @@ textarea,input{font-family:inherit}
 .autosave-bar{font-size:11px;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .autosave-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 
-/* IMPORT */
-.import-area{border:2px dashed var(--border);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;margin-top:8px}
-.import-area:hover{border-color:var(--accent)}
+/* COMMENT BOX */
+.comment-wrap{margin-top:12px}
+.comment-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.comment-inp{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:9px 10px;color:var(--text);font-size:13px;resize:none;min-height:60px;line-height:1.5}
+.comment-inp:focus{outline:none;border-color:var(--accent)}
+.comment-saved{font-size:11px;color:var(--green);margin-top:4px;display:none}
+.comment-preview{font-size:11px;color:var(--text2);font-style:italic;margin-top:4px;background:var(--surf2);border-radius:var(--r2);padding:6px 8px;border-left:2px solid var(--accent)}
 </style>
 </head>
 <body>
@@ -191,8 +195,8 @@ textarea,input{font-family:inherit}
 
 <script>
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const SK = 'grind_v3';
-const SEK = 'grind_sess_v3';
+const SK = 'grind_v4';
+const SEK = 'grind_sess_v4';
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const PHASES = [
   {label:'Weeks 1–4', name:'Foundation'},
@@ -263,7 +267,7 @@ const PROG = {
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-let ST = {apiKey:'', altIndex:0, sessions:[], chat:[], phase:1};
+let ST = {apiKey:'', trainAltIndex:0, offAltIndex:0, sessions:[], chat:[], phase:1};
 let SESS = {active:false, exDone:{}, setData:{}, startTime:null};
 let timers = {};
 let extraSets = {};
@@ -276,8 +280,9 @@ function getDT(d) {
   if (w===4) return 'ball';
   return 'stretch';
 }
-function altV() { return ST.altIndex%2===0?'A':'B'; }
-function rdlV() { return ST.altIndex%2===0?'single':'barbell'; }
+function altV() { return ST.trainAltIndex%2===0?'A':'B'; }
+function rdlV() { return ST.trainAltIndex%2===0?'single':'barbell'; }
+function offAltV() { return ST.offAltIndex%2===0?'A':'B'; }
 
 // ─── STORAGE ──────────────────────────────────────────────────────────────────
 function persist() {
@@ -336,11 +341,19 @@ function altBadge(a) {
 }
 
 // ─── EXERCISE CARD ────────────────────────────────────────────────────────────
+function saveComment(id, val) {
+  SESS.setData[`${id}-comment`] = val;
+  persist();
+  const saved = document.getElementById(`cs-${id}`);
+  if (saved) { saved.style.display='block'; setTimeout(()=>{ saved.style.display='none'; },1200); }
+}
+
 function exCard(ex, id) {
   const isDone = !!SESS.exDone[id];
   const hasSets = ex.s && ex.s > 0;
   const extra = extraSets[id] || 0;
   const total = (ex.s||0) + extra;
+  const comment = SESS.setData[`${id}-comment`] || '';
 
   let setsHtml = '';
   if (hasSets) {
@@ -366,12 +379,19 @@ function exCard(ex, id) {
     </div>`;
   }
 
+  const commentHtml = `
+    <div class="comment-wrap">
+      <div class="comment-lbl">📝 Session note</div>
+      <textarea class="comment-inp" placeholder="e.g. Patrick step from 5 inch platform, felt stronger on ACL leg..." onchange="saveComment('${id}',this.value)" oninput="saveComment('${id}',this.value)">${comment}</textarea>
+      <div class="comment-saved" id="cs-${id}">✓ Saved</div>
+    </div>`;
+
   return `<div class="ex-card${isDone?' done':''}" id="ec-${id}">
     <div class="ex-head" onclick="toggleEx('${id}')">
       <div class="ex-check">${isDone?'<span style="color:#fff;font-size:11px">✓</span>':''}</div>
       <div style="flex:1">
         <div class="ex-name">${ex.n}${ex.alt?altBadge(ex.alt):''}</div>
-        <div class="ex-meta">${ex.m}</div>
+        <div class="ex-meta">${ex.m}${comment?` · <span style="color:var(--accent);font-size:10px">📝 note</span>`:''}</div>
       </div>
       <span class="ex-chev">⌄</span>
     </div>
@@ -379,6 +399,7 @@ function exCard(ex, id) {
       ${ex.note?`<div class="note-box">📋 ${ex.note}</div>`:''}
       ${ex.acl?'<div class="acl-box">⚡ ACL leg always goes first — every set, no exceptions.</div>':''}
       ${setsHtml}
+      ${commentHtml}
       <button class="btn btn-green" onclick="markDone('${id}')">✓ Mark complete</button>
     </div>
   </div>`;
@@ -456,8 +477,12 @@ function finishSession() {
   const dt = getDT();
   const av = altV();
   const type = dt==='training'?`Training — ${av==='A'?'ATG/Pull ups':'Hack/Pike push ups'}`:dt==='hiit'?'HIIT + Skill':dt==='ball'?'Basketball + Skill':'Stretch + Skill';
-  ST.sessions.push({date:new Date().toISOString(), type, exCount:Object.keys(SESS.exDone).length});
-  if (dt!=='rest') ST.altIndex++;
+  // extract comments from setData to save with session
+  const comments = {};
+  Object.keys(SESS.setData).forEach(k=>{ if(k.endsWith('-comment')&&SESS.setData[k]) comments[k.replace('-comment','')] = SESS.setData[k]; });
+  ST.sessions.push({date:new Date().toISOString(), type, exCount:Object.keys(SESS.exDone).length, comments});
+  if (dt==='training') ST.trainAltIndex++;
+  else if (dt!=='rest') ST.offAltIndex++;
   SESS = {active:false, exDone:{}, setData:{}, startTime:null};
   extraSets = {};
   persist();
@@ -471,7 +496,7 @@ function renderDash() {
   const sq=av==='A'?'ATG split squat':'Hack squat';
   const rdl=rv==='single'?'Single leg RDL':'Barbell RDL';
   const up=av==='A'?'Pull ups + TRX rows':'Pike push ups + Dips';
-  const offAlt=ST.altIndex%2===0?'Bent knee calf':'Hip flexor KB raise';
+  const offAlt=offAltV()==='A'?'Bent knee calf':'Hip flexor KB raise';
   const today=new Date(), last=ST.sessions[ST.sessions.length-1];
 
   let badge='rest', title='Full rest', sub='Recovery only. See you tomorrow.', rows=[];
@@ -564,7 +589,7 @@ function renderWorkout() {
     PROG.skill.forEach((e,i) => html += exCard(e,'sk'+i));
     html += bsep('Forearm + calf');
     PROG.forearm.forEach((e,i) => html += exCard(e,'fa'+i));
-    html += exCard(ST.altIndex%2===0?PROG.altA:PROG.altB,'alt0');
+    html += exCard(offAltV()==='A'?PROG.altA:PROG.altB,'alt0');
     if (dt==='hiit') { html+=bsep('HIIT'); PROG.hiit.forEach((e,i)=>html+=exCard(e,'hi'+i)); }
     else if (dt==='ball') { html+=bsep('Basketball'); PROG.ball.forEach((e,i)=>html+=exCard(e,'ba'+i)); }
     else { html+=bsep('Deep stretch'); PROG.stretch.forEach((e,i)=>html+=exCard(e,'st'+i)); }
@@ -583,14 +608,17 @@ function renderHistory() {
   }
   document.getElementById('p-history').innerHTML = `
     <div style="font-size:12px;color:var(--text2);margin-bottom:12px">${sessions.length} total sessions</div>
-    ${sessions.map(s=>`
-      <div class="hist-item">
+    ${sessions.map(s=>{
+      const notes = s.comments ? Object.entries(s.comments).map(([k,v])=>`<div class="comment-preview">📝 ${k.replace(/([a-z])([0-9])/,'$1 $2')}: ${v}</div>`).join('') : '';
+      return `<div class="hist-item">
         <div class="hist-hdr">
           <div class="hist-date">${new Date(s.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
           <div class="hist-type">${s.type}</div>
         </div>
         <div class="hist-sum">${s.exCount} exercises · ${new Date(s.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div>
-      </div>`).join('')}
+        ${notes}
+      </div>`;
+    }).join('')}
   `;
 }
 
@@ -647,7 +675,7 @@ async function sendMsg() {
   const recent = ST.sessions.slice(-10).map(s=>`${new Date(s.date).toLocaleDateString()} — ${s.type} — ${s.exCount} exercises`).join('\n');
   const sys = `You are a direct personal training coach for someone recovering from ACL reconstruction (3 years post-op, graft fully mature). Goal: lean bulk, strength over size. Fasting 16:8 (5:30pm–9:30am). HIIT at 8am fasted. Supplements: collagen+vit C 7:15am, algae omega-3+D3/K2 at breakfast, magnesium glycinate at night.
 
-PHASE: Weeks 5–8 (July 14–Aug 10, 2026). Alt index: ${ST.altIndex} (${altV()} today).
+PHASE: Weeks 5–8 (July 14–Aug 10, 2026). Training alt: ${ST.trainAltIndex} (${altV()} today). Off day alt: ${ST.offAltIndex} (${offAltV()} today).
 TRAINING (Mon/Wed/Fri) — B1: Tibialis raises (standing then seated 15lb), Patrick step 4-5" + isometric knee hold (heel flat throughout), Alt: ATG split squat(A)/Hack squat 10lb(B), Alt: Single leg RDL 20lb(A)/Barbell RDL 60-80lb(B). B2 Alt: A=Pull ups(3-4 unassisted+31lb assist, fixed bar)+TRX rows, B=Pike push ups+Dips. B3: Dead bug 20lb+Copenhagen knee 20sec+Hyperextensions.
 OFF DAYS: L-sit (approaching full both legs straight 10sec), wrist curls 12lb, farmers 20kg/40sec, calf raises 2x45lb/8, alt: bent knee calf(A)/hip flexor KB on foot(B). Hoist captain's chair available. Tue=HIIT Johnny G Spirit, Thu=Basketball Option 2, Sat=Deep stretch 9 stretches.
 BESTS: Pull ups 3-4 unassisted, dips 5 BW, hack squat 10lb, barbell RDL 80lb/8, single leg RDL 20lb, L-sit both legs 10sec, farmers 20kg/40sec, calf 2x45lb/8.
@@ -708,7 +736,8 @@ function renderSettings() {
       <div class="card-title">Stats</div>
       <div class="srow"><div class="slbl">Sessions logged</div><span class="sval">${ST.sessions.length}</span></div>
       <div class="srow"><div class="slbl">Current streak</div><span class="sval">${calcStreak()} days</span></div>
-      <div class="srow"><div class="slbl">Alt index</div><span class="sval">${ST.altIndex} (${altV()} today)</span></div>
+      <div class="srow"><div class="slbl">Training alt index</div><span class="sval">${ST.trainAltIndex} (${altV()} today)</span></div>
+      <div class="srow"><div class="slbl">Off day alt index</div><span class="sval">${ST.offAltIndex} (${offAltV()} today)</span></div>
       <div class="srow" style="border:none"><div class="slbl">Last session</div><span class="sval">${ST.sessions.length?new Date(ST.sessions[ST.sessions.length-1].date).toLocaleDateString():'—'}</span></div>
     </div>
     <div class="card">
@@ -781,7 +810,7 @@ function importData(input) {
 
 function clearData() {
   if (!confirm('Clear all session data? API key and settings are kept.')) return;
-  ST.sessions = []; ST.chat = []; ST.altIndex = 0;
+  ST.sessions = []; ST.chat = []; ST.trainAltIndex = 0; ST.offAltIndex = 0;
   SESS = {active:false, exDone:{}, setData:{}, startTime:null};
   extraSets = {};
   persist(); renderSettings(); renderDash();
