@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Grind">
+<meta name="theme-color" content="#0f1117">
+<title>Grind</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f1117;--surf:#1a1d27;--surf2:#222638;
+  --border:#2e3248;--accent:#4f8ef7;--accent2:#7c5cbf;
+  --green:#3ecf8e;--amber:#f5a623;--red:#e05252;
+  --text:#e8eaf0;--text2:#8b90a7;--text3:#555a73;
+  --r:12px;--r2:8px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;font-size:14px;overflow-x:hidden}
+input[type=number]{-webkit-appearance:none;-moz-appearance:textfield}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+textarea,input{font-family:inherit}
+::-webkit-scrollbar{width:0}
+
+/* APP */
+#app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+
+/* NAV */
+.nav{display:flex;background:var(--surf);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nt{flex:1;padding:10px 4px 8px;text-align:center;font-size:10px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;letter-spacing:.5px;text-transform:uppercase;transition:color .15s}
+.nt.on{color:var(--accent);border-bottom-color:var(--accent)}
+.nt .ico{font-size:18px;display:block;margin-bottom:2px}
+
+/* PAGES */
+.page{display:none;padding:12px;padding-bottom:90px;flex:1}
+.page.on{display:block}
+
+/* CARDS */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.card-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+
+/* BADGES */
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:6px}
+.badge.train{background:rgba(79,142,247,.15);color:var(--accent)}
+.badge.off{background:rgba(124,92,191,.15);color:var(--accent2)}
+.badge.rest{background:rgba(85,90,115,.3);color:var(--text2)}
+.alt-a{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;background:rgba(79,142,247,.15);color:var(--accent)}
+.alt-b{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;background:rgba(124,92,191,.15);color:var(--accent2)}
+.acl-b{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;background:rgba(62,207,142,.15);color:var(--green)}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.stat{background:var(--surf2);border-radius:var(--r2);padding:12px}
+.stat-val{font-size:22px;font-weight:800;color:var(--accent)}
+.stat-label{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* BUTTONS */
+.btn{width:100%;border:none;border-radius:var(--r2);padding:12px;font-size:14px;font-weight:700;cursor:pointer;display:block;text-align:center}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:active{opacity:.85}
+.btn-resume{background:var(--accent2);color:#fff;margin-bottom:8px}
+.btn-save{background:var(--accent);color:#fff;font-size:15px;padding:14px;margin-top:20px}
+.btn-green{background:var(--green);color:#fff;padding:10px;font-size:13px;margin-top:10px}
+.btn-danger{background:transparent;border:1px solid var(--red);color:var(--red);margin-top:16px}
+.btn-ghost{background:var(--surf2);border:1px solid var(--border);color:var(--text2);padding:10px}
+
+/* TODAY EXERCISE ROWS */
+.ex-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px}
+.ex-row:last-child{border:none}
+.ex-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0}
+.ex-dot.done{background:var(--green)}
+.blk-tag{font-size:10px;color:var(--text3);margin-left:auto;white-space:nowrap}
+
+/* BLOCK SEPARATOR */
+.bsep{display:flex;align-items:center;gap:8px;margin:16px 0 8px}
+.bsep-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.bsep-line{flex:1;height:1px;background:var(--border)}
+
+/* EXERCISE CARDS */
+.ex-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden;transition:border-color .15s}
+.ex-card.open{border-color:var(--accent)}
+.ex-card.done{border-color:var(--green);opacity:.75}
+.ex-head{display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:10px}
+.ex-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ex-card.done .ex-check{background:var(--green);border-color:var(--green)}
+.ex-name{flex:1;font-size:13px;font-weight:600}
+.ex-meta{font-size:11px;color:var(--text2)}
+.ex-chev{color:var(--text3);font-size:16px;transition:transform .15s;display:inline-block}
+.ex-card.open .ex-chev{transform:rotate(180deg)}
+.ex-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.ex-card.open .ex-body{display:block}
+.note-box{font-size:12px;color:var(--amber);background:rgba(245,166,35,.08);border-radius:var(--r2);padding:8px 10px;margin:10px 0;line-height:1.5}
+.acl-box{font-size:12px;color:var(--accent);background:rgba(79,142,247,.08);border-radius:var(--r2);padding:8px 10px;margin:8px 0}
+
+/* SETS TABLE */
+.sets-hdr{display:grid;grid-template-columns:28px 1fr 1fr 60px;gap:6px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.set-row{display:grid;grid-template-columns:28px 1fr 1fr 60px;gap:6px;margin-bottom:6px;align-items:center}
+.set-num{font-size:12px;color:var(--text2);text-align:center}
+.set-inp{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:7px 6px;color:var(--text);font-size:14px;font-weight:600;width:100%;text-align:center}
+.set-inp:focus{outline:none;border-color:var(--accent)}
+.set-btn{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:7px 4px;color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;width:100%;text-align:center}
+.set-btn.done{background:rgba(62,207,142,.15);border-color:var(--green);color:var(--green)}
+.add-set-btn{width:100%;background:transparent;border:1px dashed var(--border);border-radius:var(--r2);padding:8px;color:var(--text3);font-size:12px;cursor:pointer;margin-top:2px}
+
+/* TIMER */
+.timer-row{background:var(--surf2);border-radius:var(--r2);padding:10px 12px;margin-top:10px;display:flex;align-items:center;gap:10px}
+.timer-disp{font-size:20px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;min-width:44px}
+.timer-lbl{font-size:11px;color:var(--text2)}
+.timer-btn{margin-left:auto;background:var(--accent);border:none;border-radius:var(--r2);padding:7px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.timer-btn.stop{background:var(--red)}
+
+/* RESUME BANNER */
+.resume-banner{background:rgba(124,92,191,.12);border:1px solid var(--accent2);border-radius:var(--r);padding:14px;margin-bottom:10px}
+
+/* HISTORY */
+.hist-item{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.hist-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hist-date{font-size:13px;font-weight:700}
+.hist-type{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
+.hist-sum{font-size:12px;color:var(--text2)}
+
+/* COACH */
+.api-box{background:rgba(245,166,35,.08);border:1px solid var(--amber);border-radius:var(--r);padding:14px;margin-bottom:14px}
+.api-title{font-size:13px;font-weight:700;color:var(--amber);margin-bottom:6px}
+.api-sub{font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5}
+.api-inp{width:100%;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:10px;color:var(--text);font-size:12px;font-family:monospace;margin-bottom:8px}
+.api-inp:focus{outline:none;border-color:var(--accent)}
+.api-save{width:100%;background:var(--accent);border:none;border-radius:var(--r2);padding:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.quick-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.quick-btn{background:var(--surf2);border:1px solid var(--border);border-radius:20px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer}
+.quick-btn:active{border-color:var(--accent);color:var(--accent)}
+.chat-wrap{display:flex;flex-direction:column;min-height:180px;max-height:360px;overflow-y:auto;margin-bottom:10px}
+.msg-user{max-width:86%;background:var(--accent);color:#fff;border-radius:12px 12px 3px 12px;padding:10px 12px;font-size:13px;line-height:1.6;margin-left:auto;margin-bottom:8px;word-break:break-word}
+.msg-coach{max-width:86%;background:var(--surf2);color:var(--text);border-radius:12px 12px 12px 3px;padding:10px 12px;font-size:13px;line-height:1.6;margin-bottom:8px;word-break:break-word}
+.msg-loading{color:var(--text2);font-style:italic}
+.chat-inp-row{display:flex;gap:8px}
+.chat-inp{flex:1;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:10px 12px;color:var(--text);font-size:13px;resize:none;height:42px}
+.chat-inp:focus{outline:none;border-color:var(--accent)}
+.chat-send{background:var(--accent);border:none;border-radius:var(--r2);padding:10px 14px;color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.chat-send:disabled{opacity:.4}
+
+/* SETTINGS */
+.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.srow:last-child{border:none}
+.slbl{font-size:14px;font-weight:600}
+.ssub{font-size:11px;color:var(--text2);margin-top:1px}
+.sval{font-size:12px;color:var(--text2);font-weight:600}
+.status-on{color:var(--green);font-size:12px;font-weight:700}
+.status-warn{color:var(--amber);font-size:12px;font-weight:700}
+.phase-toggle{display:flex;background:var(--surf2);border-radius:var(--r2);padding:3px;margin-bottom:12px;border:1px solid var(--border)}
+.phase-opt{flex:1;padding:7px 2px;text-align:center;font-size:9px;font-weight:700;color:var(--text2);border-radius:6px;cursor:pointer;letter-spacing:.3px}
+.phase-opt.on{background:var(--accent);color:#fff}
+.export-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.export-btn{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 8px;font-size:11px;color:var(--text2);cursor:pointer;text-align:center;line-height:1.6}
+.export-btn:active{border-color:var(--accent)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:50px 20px;color:var(--text2)}
+.empty-icon{font-size:36px;margin-bottom:10px}
+
+/* AUTOSAVE INDICATOR */
+.autosave-bar{font-size:11px;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.autosave-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* IMPORT */
+.import-area{border:2px dashed var(--border);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;margin-top:8px}
+.import-area:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nt on" data-tab="dash" onclick="switchTab('dash')"><span class="ico">⊞</span>Today</div>
+  <div class="nt" data-tab="workout" onclick="switchTab('workout')"><span class="ico">🏋</span>Workout</div>
+  <div class="nt" data-tab="history" onclick="switchTab('history')"><span class="ico">📈</span>History</div>
+  <div class="nt" data-tab="coach" onclick="switchTab('coach')"><span class="ico">🧠</span>Coach</div>
+  <div class="nt" data-tab="settings" onclick="switchTab('settings')"><span class="ico">⚙</span>Settings</div>
+</nav>
+
+<!-- PAGES -->
+<div class="page on" id="p-dash"></div>
+<div class="page" id="p-workout"></div>
+<div class="page" id="p-history"></div>
+<div class="page" id="p-coach"></div>
+<div class="page" id="p-settings"></div>
+
+</div>
+
+<script>
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const SK = 'grind_v3';
+const SEK = 'grind_sess_v3';
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const PHASES = [
+  {label:'Weeks 1–4', name:'Foundation'},
+  {label:'Weeks 5–8', name:'Strength'},
+  {label:'Weeks 9–12', name:'Power'},
+  {label:'Weeks 13–16', name:'Performance'},
+];
+
+// ─── PROGRAM DATA ─────────────────────────────────────────────────────────────
+const PROG = {
+  warmup:[
+    {n:'Leg swings — front and side',m:'10 each leg',note:'Hold wall for balance. Full range of motion.'},
+    {n:'Hip circles',m:'10 each direction',note:'Slow and deliberate.'},
+    {n:'Cat camels',m:'10 reps',note:'Full spinal flexion and extension.'},
+    {n:'Squat sky reaches',m:'10 reps',note:'Deep squat, arms reaching overhead.'},
+    {n:'Wrist prep',m:'30 seconds',note:'Circles and floor stretches. Important for TRX and L-sit.'},
+    {n:'Dead bug',m:'30 seconds',note:'Core activation. Flatten back completely.'},
+  ],
+  b1:[
+    {n:'Tibialis raises — standing',m:'1×15–20 reps',s:1,r:18,w:0,note:'Activation set. Standing wall version. Toes up. Wakes up the muscle before loading.'},
+    {n:'Tibialis raises — seated weighted',m:'2×10–12 reps',s:2,r:10,w:15,note:'Leg straight extended. 15lb on foot or shin. Strength sets.'},
+    {n:'Patrick step — elevated platform',m:'3×10 each leg',s:3,r:10,w:0,acl:true,note:'4–5 inch platform. 4–5 seconds down. Heel stays flat throughout. ACL leg first.'},
+    {n:'Isometric knee forward hold',m:'3–5 holds × 5 sec each leg',s:3,r:5,w:0,acl:true,note:'Max effort 5-sec push. Knee driving forward over toes, heel grounded. 10 sec rest between pushes. Do during Patrick step rest periods — no extra time added.'},
+  ],
+  sqA:{n:'ATG split squat',m:'3×8 each leg',s:3,r:8,w:0,acl:true,alt:'A',note:'Back knee to floor. Front knee drives over toes. Front heel stays flat — if rising shorten stance or elevate front heel on plate. ACL leg forward first.'},
+  sqB:{n:'Hack squat (Hackenschmidt)',m:'3×8–10 reps',s:3,r:8,w:10,alt:'B',note:'KB behind legs. 4 sec down, 1 hold, drive up. Hand on outer quad of ACL leg before each set to cue vastus lateralis.'},
+  rdlA:{n:'Single leg RDL',m:'3×8 each leg',s:3,r:8,w:20,acl:true,alt:'A',note:'ACL leg planted first. Weight same side as lifted leg. Wall help OK. Do not add weight if ACL leg lags.'},
+  rdlB:{n:'Barbell RDL',m:'3×8 reps',s:3,r:8,w:70,alt:'B',note:'Bilateral. 3 sec down. Never round lower back. Check ACL leg pulls equal load.'},
+  b2A:[
+    {n:'Pull ups',m:'3×5 reps',s:3,r:5,w:0,note:'Every rep unassisted first. 31lb assist only for reps you cannot complete. Goal: all 5 unassisted. Use fixed bar on squat rack — not the Cybex cable bar. Tempo work is next phase.'},
+    {n:'TRX rows',m:'3×8–10 reps',s:3,r:8,w:0,note:'More horizontal = harder. Retract shoulder blades at top. Builds stabilizer strength for muscle up.'},
+  ],
+  b2B:[
+    {n:'Pike push ups',m:'3×5–8 reps',s:3,r:6,w:0,note:'Hips high, hands shoulder width, head toward floor. Full range. Handstand foundation.'},
+    {n:'Dips — progressive',m:'3 sets',s:3,r:8,w:0,note:'Wk5: 8 reps BW. Wk6: 10 reps. Wk7: light weight. Full lockout top, full depth bottom.'},
+  ],
+  b3:[
+    {n:'Dead bug with weight',m:'3×10 reps',s:3,r:10,w:20,note:'Both legs extended. Lower back FLAT throughout. If back arches — reduce weight or revert to alternating legs.'},
+    {n:'Copenhagen plank — knee version',m:'3×20 sec each side',s:3,r:20,w:0,acl:true,note:'Top knee on bench. Stack hips vertically. Add 5 sec per week. Target 35 sec each side by week 8.'},
+    {n:'Hyperextensions',m:'3×10–12 reps',s:3,r:10,w:0,note:'2 sec up, 1 hold, 2 sec down. Squeeze glutes at top. Mild lower back stiffness in first sessions is normal — adapts by week 6–7.'},
+  ],
+  skill:[
+    {n:'Wrist warm up',m:'2 minutes',note:'Circles both directions, forward and backward stretches. Never skip.'},
+    {n:'L-sit — both legs straight',m:'3–4×build to 20 sec',s:4,r:15,w:0,note:'Press DOWN hard through hands. Approaching true L-sit.'},
+    {n:'L-sit — single leg extended',m:'3×5–8 reps each',s:3,r:6,w:0,note:'One leg straight out, one tucked. Alternate.'},
+  ],
+  forearm:[
+    {n:'Wrist curls',m:'3×10 reps',s:3,r:10,w:12,note:'Forearm on thigh, curl wrist upward.'},
+    {n:'Reverse wrist curls',m:'3×10 reps',s:3,r:10,w:12,note:'Same position, curl wrist downward.'},
+    {n:'Farmers hold',m:'3×40 sec',s:3,r:40,w:20,note:'20kg each hand. Progress to 45 sec before adding weight.'},
+    {n:'Single leg calf raises — straight',m:'3×8 each leg',s:3,r:8,w:45,acl:true,note:'ACL leg first. 2×45lb. Gastrocnemius. Progress to 10 reps before adding weight.'},
+  ],
+  altA:{n:'Bent knee calf raises',m:'3×12–15 reps',s:3,r:12,w:0,alt:'A',note:'Soleus focus. Knee bent 90°. Do after straight leg raises while muscle is warm.'},
+  altB:{n:'Hip flexor KB raise',m:'3×10 each leg',s:3,r:10,w:0,acl:true,alt:'B',note:'KB locked on foot. Drive knee up lifting KB. Hold at top. Start lightest KB — long lever makes it harder than it looks. Also use Hoist captain\'s chair for knee raises — direct L-sit carryover.'},
+  hiit:[{n:'HIIT — Spin bike (Johnny G Spirit)',m:'~10 min total',note:'2 min warmup → 6 rounds 20 sec hard / 40 sec easy → 1 min cool down. Fasted. Effort from cadence not resistance.'}],
+  ball:[{n:'Basketball — Option 2',m:'20–30 min',note:'70% shooting: self-pass catch and shoot, corner spots, bank shots, free throws. 30%: figure 8 dribble, weak hand, slow pull-up jumpers, Mikan drill.'}],
+  stretch:[
+    {n:'Couch stretch',m:'60 sec each side',note:'Hip flexors. Highest priority for ACL mechanics and squat depth.'},
+    {n:'Anterior tibialis kneeling stretch',m:'45 sec each side',note:'Position 1 first. Tops of feet flat on ground.'},
+    {n:'Elephant stretch',m:'60 sec',note:'Hamstring and calf posterior chain.'},
+    {n:'90/90 hip stretch',m:'60 sec each side',note:'Hip external rotators. Tight from basketball cutting.'},
+    {n:'Calf stretch',m:'45 sec each side',note:'Prevents achilles tightness reaching knee.'},
+    {n:'Plantar fascia',m:'2 min',note:'Foot rolling or toe extension.'},
+    {n:'Doorway chest and shoulder stretch',m:'30 sec each side',note:'Arm at 90° on doorframe, lean forward. Opens pecs and anterior deltoid for pike push ups.'},
+    {n:'Shoulder dislocates — band or towel',m:'10 slow reps',note:'Hold wide, pass overhead and behind in full circle. Entire shoulder girdle. Handstand and muscle up foundation.'},
+    {n:'Dead hang',m:'30–60 seconds',note:'Decompresses spine. Transfers to pull up strength.'},
+  ],
+};
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let ST = {apiKey:'', altIndex:0, sessions:[], chat:[], phase:1};
+let SESS = {active:false, exDone:{}, setData:{}, startTime:null};
+let timers = {};
+let extraSets = {};
+
+function getDT(d) {
+  const w = (d || new Date()).getDay();
+  if (w===0) return 'rest';
+  if (w===1||w===3||w===5) return 'training';
+  if (w===2) return 'hiit';
+  if (w===4) return 'ball';
+  return 'stretch';
+}
+function altV() { return ST.altIndex%2===0?'A':'B'; }
+function rdlV() { return ST.altIndex%2===0?'single':'barbell'; }
+
+// ─── STORAGE ──────────────────────────────────────────────────────────────────
+function persist() {
+  try { localStorage.setItem(SK, JSON.stringify(ST)); } catch(e){}
+  try { localStorage.setItem(SEK, JSON.stringify(SESS)); } catch(e){}
+}
+
+function loadData() {
+  try {
+    const s = localStorage.getItem(SK);
+    if (s) ST = {...ST, ...JSON.parse(s)};
+  } catch(e){}
+  try {
+    const s = localStorage.getItem(SEK);
+    if (s) { const d = JSON.parse(s); if (d.active) SESS = {...SESS, ...d}; }
+  } catch(e){}
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(t => t.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  document.querySelector(`[data-tab="${id}"]`).classList.add('on');
+  if (id==='dash') renderDash();
+  if (id==='workout') renderWorkout();
+  if (id==='history') renderHistory();
+  if (id==='coach') renderCoach();
+  if (id==='settings') renderSettings();
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function fmtTime(id) {
+  const s = timers[id]?.secs !== undefined ? timers[id].secs : 90;
+  if (s <= 0) return 'Go!';
+  return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');
+}
+
+function calcStreak() {
+  if (!ST.sessions.length) return 0;
+  let streak=0; const t=new Date(); t.setHours(0,0,0,0); let c=new Date(t);
+  for (let i=ST.sessions.length-1;i>=0;i--) {
+    const d=new Date(ST.sessions[i].date); d.setHours(0,0,0,0);
+    if (d.getTime()===c.getTime()){streak++;c.setDate(c.getDate()-1);}
+    else if (d.getTime()<c.getTime()) break;
+  }
+  return streak;
+}
+
+function bsep(label) {
+  return `<div class="bsep"><div class="bsep-lbl">${label}</div><div class="bsep-line"></div></div>`;
+}
+
+function altBadge(a) {
+  return `<span class="${a==='A'?'alt-a':'alt-b'}">${a}</span>`;
+}
+
+// ─── EXERCISE CARD ────────────────────────────────────────────────────────────
+function exCard(ex, id) {
+  const isDone = !!SESS.exDone[id];
+  const hasSets = ex.s && ex.s > 0;
+  const extra = extraSets[id] || 0;
+  const total = (ex.s||0) + extra;
+
+  let setsHtml = '';
+  if (hasSets) {
+    setsHtml += `<div class="sets-hdr"><div>Set</div><div>Reps</div><div>Wt (lb)</div><div>Done</div></div>`;
+    for (let i=0; i<total; i++) {
+      const done = !!SESS.setData[`${id}-${i}-done`];
+      const reps = SESS.setData[`${id}-${i}-reps`] || '';
+      const wt = SESS.setData[`${id}-${i}-wt`] || '';
+      setsHtml += `<div class="set-row">
+        <div class="set-num">${i+1}</div>
+        <input class="set-inp" type="number" inputmode="numeric" placeholder="${ex.r||'—'}" value="${reps}" onchange="setVal('${id}',${i},'reps',this.value)">
+        <input class="set-inp" type="number" inputmode="decimal" placeholder="${ex.w!==undefined?ex.w:'—'}" value="${wt}" onchange="setVal('${id}',${i},'wt',this.value)">
+        <button class="set-btn${done?' done':''}" onclick="toggleSetDone('${id}',${i})">${done?'✓':'Done'}</button>
+      </div>`;
+    }
+    setsHtml += `<button class="add-set-btn" onclick="addSet('${id}')">+ Add set</button>`;
+    setsHtml += `<div class="timer-row">
+      <div>
+        <div class="timer-disp" id="td-${id}">${fmtTime(id)}</div>
+        <div class="timer-lbl">Rest timer</div>
+      </div>
+      <button class="timer-btn${timers[id]?.running?' stop':''}" id="tb-${id}" onclick="toggleTimer('${id}')">${timers[id]?.running?'Stop':timers[id]?.secs===0?'Reset':'Start'}</button>
+    </div>`;
+  }
+
+  return `<div class="ex-card${isDone?' done':''}" id="ec-${id}">
+    <div class="ex-head" onclick="toggleEx('${id}')">
+      <div class="ex-check">${isDone?'<span style="color:#fff;font-size:11px">✓</span>':''}</div>
+      <div style="flex:1">
+        <div class="ex-name">${ex.n}${ex.alt?altBadge(ex.alt):''}</div>
+        <div class="ex-meta">${ex.m}</div>
+      </div>
+      <span class="ex-chev">⌄</span>
+    </div>
+    <div class="ex-body">
+      ${ex.note?`<div class="note-box">📋 ${ex.note}</div>`:''}
+      ${ex.acl?'<div class="acl-box">⚡ ACL leg always goes first — every set, no exceptions.</div>':''}
+      ${setsHtml}
+      <button class="btn btn-green" onclick="markDone('${id}')">✓ Mark complete</button>
+    </div>
+  </div>`;
+}
+
+function toggleEx(id) {
+  const card = document.getElementById('ec-'+id);
+  if (!card) return;
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.ex-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) { card.classList.add('open'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+
+function setVal(id, idx, field, val) {
+  SESS.setData[`${id}-${idx}-${field}`] = val;
+  persist();
+}
+
+function toggleSetDone(id, idx) {
+  const key = `${id}-${idx}-done`;
+  SESS.setData[key] = !SESS.setData[key];
+  persist();
+  const btn = document.getElementById(`ec-${id}`)?.querySelectorAll('.set-btn')[idx];
+  if (btn) { btn.classList.toggle('done', !!SESS.setData[key]); btn.textContent = SESS.setData[key]?'✓':'Done'; }
+}
+
+function addSet(id) {
+  extraSets[id] = (extraSets[id]||0) + 1;
+  // re-render just the workout
+  renderWorkout();
+  // re-open the card
+  setTimeout(()=>{ const c=document.getElementById('ec-'+id); if(c){c.classList.add('open');} },50);
+}
+
+function markDone(id) {
+  SESS.exDone[id] = true;
+  persist();
+  const card = document.getElementById('ec-'+id);
+  if (card) { card.classList.add('done'); card.classList.remove('open'); card.querySelector('.ex-check').innerHTML='<span style="color:#fff;font-size:11px">✓</span>'; }
+  // update dot on dash
+  const dot = document.querySelector(`[data-ex="${id}"]`);
+  if (dot) dot.classList.add('done');
+}
+
+// ─── TIMER ────────────────────────────────────────────────────────────────────
+function toggleTimer(id) {
+  if (timers[id]?.running) {
+    clearInterval(timers[id].iv);
+    timers[id] = {running:false, secs:90};
+    const btn=document.getElementById('tb-'+id); const disp=document.getElementById('td-'+id);
+    if(btn){btn.textContent='Start';btn.classList.remove('stop');}
+    if(disp)disp.textContent='1:30';
+    return;
+  }
+  let s = 90;
+  timers[id] = {running:true, secs:90};
+  const btn=document.getElementById('tb-'+id); if(btn){btn.textContent='Stop';btn.classList.add('stop');}
+  timers[id].iv = setInterval(()=>{
+    s--; timers[id].secs=s;
+    const disp=document.getElementById('td-'+id);
+    if(disp) disp.textContent = s<=0?'Go!':Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');
+    if(s<=0){clearInterval(timers[id].iv);timers[id].running=false;const b=document.getElementById('tb-'+id);if(b){b.textContent='Reset';b.classList.remove('stop');}}
+  },1000);
+}
+
+// ─── SESSION ──────────────────────────────────────────────────────────────────
+function startSession() {
+  SESS = {active:true, exDone:{}, setData:{}, startTime:new Date().toISOString()};
+  extraSets = {};
+  persist();
+  switchTab('workout');
+}
+
+function finishSession() {
+  const dt = getDT();
+  const av = altV();
+  const type = dt==='training'?`Training — ${av==='A'?'ATG/Pull ups':'Hack/Pike push ups'}`:dt==='hiit'?'HIIT + Skill':dt==='ball'?'Basketball + Skill':'Stretch + Skill';
+  ST.sessions.push({date:new Date().toISOString(), type, exCount:Object.keys(SESS.exDone).length});
+  if (dt!=='rest') ST.altIndex++;
+  SESS = {active:false, exDone:{}, setData:{}, startTime:null};
+  extraSets = {};
+  persist();
+  switchTab('dash');
+  setTimeout(()=>alert('Session saved. Great work.'),100);
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+function renderDash() {
+  const dt=getDT(), av=altV(), rv=rdlV();
+  const sq=av==='A'?'ATG split squat':'Hack squat';
+  const rdl=rv==='single'?'Single leg RDL':'Barbell RDL';
+  const up=av==='A'?'Pull ups + TRX rows':'Pike push ups + Dips';
+  const offAlt=ST.altIndex%2===0?'Bent knee calf':'Hip flexor KB raise';
+  const today=new Date(), last=ST.sessions[ST.sessions.length-1];
+
+  let badge='rest', title='Full rest', sub='Recovery only. See you tomorrow.', rows=[];
+  if (dt==='training') {
+    badge='train'; title=DAYS[today.getDay()]+' — Full body'; sub='B2: '+up+' · Legs: '+sq+' + '+rdl;
+    rows=[
+      {n:'Warm up',b:'Warm',id:'wu0'},{n:'Tibialis raises',b:'B1',id:'b10'},
+      {n:'Patrick step + Isometric hold',b:'B1',id:'b12',acl:true},
+      {n:sq,b:'B1',id:'sq0',alt:av},{n:rdl,b:'B1',id:'rdl0',alt:rv==='single'?'A':'B'},
+      {n:av==='A'?'Pull ups':'Pike push ups',b:'B2',id:'b20'},
+      {n:av==='A'?'TRX rows':'Dips',b:'B2',id:'b21'},
+      {n:'Dead bug + Copenhagen + Hyperext.',b:'B3',id:'b30'}
+    ];
+  } else if (dt!=='rest') {
+    badge='off';
+    if(dt==='hiit'){title='HIIT + skill + accessory';sub='Spin bike · L-sit · Forearm + calf';}
+    else if(dt==='ball'){title='Basketball + skill + accessory';sub='Basketball Option 2 · L-sit · Forearm + calf';}
+    else{title='Stretch + skill + accessory';sub='Deep stretch · L-sit · Forearm + calf';}
+    rows=[
+      {n:'L-sit skill work',b:'Skill',id:'sk0'},{n:'Wrist curls + Reverse + Farmers hold',b:'Access',id:'fa0'},
+      {n:'Single leg calf raises — straight',b:'Access',id:'fa3',acl:true},
+      {n:offAlt,b:'Access',id:'alt0',alt:offAlt.includes('Bent')?'A':'B'},
+      {n:dt==='hiit'?'HIIT — Spin bike':dt==='ball'?'Basketball Option 2':'Deep stretch (9 stretches)',b:'Cardio',id:'card0'}
+    ];
+  }
+
+  const exRows = rows.map(r=>`
+    <div class="ex-row">
+      <div class="ex-dot${SESS.exDone[r.id]?' done':''}" data-ex="${r.id}"></div>
+      <span>${r.n}</span>
+      ${r.alt?altBadge(r.alt):''}
+      ${r.acl?'<span class="acl-b">ACL</span>':''}
+      <span class="blk-tag">${r.b}</span>
+    </div>`).join('');
+
+  document.getElementById('p-dash').innerHTML = `
+    ${SESS.active?`<div class="resume-banner">
+      <div style="font-size:13px;font-weight:700;color:#7c5cbf;margin-bottom:6px">⏸ Session in progress</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px">${Object.keys(SESS.exDone).length} exercises completed. Your progress is saved.</div>
+      <button class="btn btn-resume" onclick="switchTab('workout')">Resume session →</button>
+    </div>`:''}
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</div>
+    <div class="card">
+      <span class="badge ${badge}">${badge==='train'?'Training day':badge==='off'?'Off day':'Rest day'}</span>
+      <div style="font-size:18px;font-weight:700;margin-bottom:2px">${title}</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px">${sub}</div>
+      ${dt!=='rest'&&!SESS.active?'<button class="btn btn-primary" onclick="startSession()">▶ Start session</button>':''}
+      ${dt!=='rest'&&SESS.active?'<button class="btn btn-ghost" onclick="switchTab(\'workout\')">Continue session →</button>':''}
+    </div>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-val">${ST.sessions.length}</div><div class="stat-label">Sessions logged</div></div>
+      <div class="stat"><div class="stat-val">${calcStreak()}</div><div class="stat-label">Day streak</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Today's plan</div>
+      ${exRows}
+    </div>
+    ${last?`<div class="card">
+      <div class="card-title">Last session</div>
+      <div style="font-size:12px;color:var(--text2)">${new Date(last.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
+      <div style="font-size:14px;font-weight:600;margin-top:2px">${last.type}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:2px">${last.exCount} exercises</div>
+    </div>`:''}
+  `;
+}
+
+// ─── WORKOUT ──────────────────────────────────────────────────────────────────
+function renderWorkout() {
+  const dt=getDT(), av=altV(), rv=rdlV();
+  let html = '';
+
+  if (dt==='rest') {
+    html='<div class="empty"><div class="empty-icon">😴</div>Rest day — full recovery.<br>See you tomorrow.</div>';
+  } else if (dt==='training') {
+    html += `<div class="autosave-bar"><div class="autosave-dot"></div>${SESS.active?'Progress saves automatically — safe to close and reopen':'Start session from Today tab to enable autosave'}</div>`;
+    html += bsep('Warm up — 10 min');
+    PROG.warmup.forEach((e,i) => html += exCard(e,'wu'+i));
+    html += bsep('Block 1 — ATG legs');
+    PROG.b1.forEach((e,i) => html += exCard(e,'b1'+i));
+    html += exCard(av==='A'?PROG.sqA:PROG.sqB,'sq0');
+    html += exCard(rv==='single'?PROG.rdlA:PROG.rdlB,'rdl0');
+    html += bsep('Block 2 — Upper body');
+    (av==='A'?PROG.b2A:PROG.b2B).forEach((e,i) => html += exCard(e,'b2'+i));
+    html += bsep('Block 3 — Core');
+    PROG.b3.forEach((e,i) => html += exCard(e,'b3'+i));
+    html += `<button class="btn btn-save" onclick="finishSession()">💾 Save and complete session</button>`;
+  } else {
+    html += `<div class="autosave-bar"><div class="autosave-dot"></div>${SESS.active?'Progress saves automatically':'Start session from Today tab to enable autosave'}</div>`;
+    html += bsep('Skill work — L-sit');
+    PROG.skill.forEach((e,i) => html += exCard(e,'sk'+i));
+    html += bsep('Forearm + calf');
+    PROG.forearm.forEach((e,i) => html += exCard(e,'fa'+i));
+    html += exCard(ST.altIndex%2===0?PROG.altA:PROG.altB,'alt0');
+    if (dt==='hiit') { html+=bsep('HIIT'); PROG.hiit.forEach((e,i)=>html+=exCard(e,'hi'+i)); }
+    else if (dt==='ball') { html+=bsep('Basketball'); PROG.ball.forEach((e,i)=>html+=exCard(e,'ba'+i)); }
+    else { html+=bsep('Deep stretch'); PROG.stretch.forEach((e,i)=>html+=exCard(e,'st'+i)); }
+    html += `<button class="btn btn-save" onclick="finishSession()">💾 Save and complete session</button>`;
+  }
+
+  document.getElementById('p-workout').innerHTML = html;
+}
+
+// ─── HISTORY ──────────────────────────────────────────────────────────────────
+function renderHistory() {
+  const sessions = [...ST.sessions].reverse();
+  if (!sessions.length) {
+    document.getElementById('p-history').innerHTML='<div class="empty"><div class="empty-icon">📋</div>No sessions yet.<br>Complete a workout to see your history.</div>';
+    return;
+  }
+  document.getElementById('p-history').innerHTML = `
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px">${sessions.length} total sessions</div>
+    ${sessions.map(s=>`
+      <div class="hist-item">
+        <div class="hist-hdr">
+          <div class="hist-date">${new Date(s.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
+          <div class="hist-type">${s.type}</div>
+        </div>
+        <div class="hist-sum">${s.exCount} exercises · ${new Date(s.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div>
+      </div>`).join('')}
+  `;
+}
+
+// ─── COACH ────────────────────────────────────────────────────────────────────
+function renderCoach() {
+  const quicks = ['Am I ready to progress this week?','How is my pull up trend?','ACL knee felt off — what to adjust?','When to add weight to hack squats?','How is my overall progress?','What should I focus on next session?'];
+  const chatHtml = ST.chat.length ? ST.chat.map(m=>`<div class="${m.r==='u'?'msg-user':'msg-coach'}">${m.c}</div>`).join('') : '<div class="msg-coach">Hi — I\'m your Grind coach. I know your full program, your ACL history, your current numbers, and your goals. Ask me anything.</div>';
+
+  document.getElementById('p-coach').innerHTML = `
+    ${!ST.apiKey?`<div class="api-box">
+      <div class="api-title">🔑 Add API key to unlock coach</div>
+      <div class="api-sub">Get a free key at console.anthropic.com. Saves locally — only sent to Anthropic when you ask a question.</div>
+      <input type="password" class="api-inp" id="coachKey" placeholder="sk-ant-...">
+      <button class="api-save" onclick="saveKey()">Save and unlock</button>
+    </div>`:`<div style="display:flex;align-items:center;margin-bottom:10px">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px"></span>
+      <span style="font-size:12px;color:var(--text2)">Coach connected</span>
+      <button onclick="ST.apiKey='';persist();renderCoach();" style="margin-left:auto;background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer">Change key</button>
+    </div>`}
+    <div class="quick-wrap">${quicks.map(q=>`<div class="quick-btn" onclick="askQ('${q}')">${q}</div>`).join('')}</div>
+    <div class="chat-wrap" id="chatWrap">${chatHtml}</div>
+    <div class="chat-inp-row">
+      <textarea class="chat-inp" id="chatInp" placeholder="Ask your coach..."></textarea>
+      <button class="chat-send" id="chatSend" onclick="sendMsg()">Send</button>
+    </div>
+  `;
+  const cw = document.getElementById('chatWrap');
+  if (cw) cw.scrollTop = cw.scrollHeight;
+}
+
+function saveKey() {
+  const k = document.getElementById('coachKey')?.value.trim();
+  if (!k) return;
+  ST.apiKey = k; persist(); renderCoach();
+}
+
+function askQ(q) {
+  const inp = document.getElementById('chatInp');
+  if (inp) { inp.value = q; sendMsg(); }
+}
+
+async function sendMsg() {
+  const inp = document.getElementById('chatInp');
+  const msg = inp?.value.trim();
+  if (!msg) return;
+  if (!ST.apiKey) { alert('Add your API key in Settings first.'); return; }
+  inp.value = '';
+  ST.chat.push({r:'u', c:msg});
+  persist();
+  const cw = document.getElementById('chatWrap');
+  if (cw) { cw.innerHTML += `<div class="msg-user">${msg}</div><div class="msg-coach msg-loading" id="loading">Thinking...</div>`; cw.scrollTop=cw.scrollHeight; }
+  const btn = document.getElementById('chatSend'); if (btn) btn.disabled = true;
+
+  const recent = ST.sessions.slice(-10).map(s=>`${new Date(s.date).toLocaleDateString()} — ${s.type} — ${s.exCount} exercises`).join('\n');
+  const sys = `You are a direct personal training coach for someone recovering from ACL reconstruction (3 years post-op, graft fully mature). Goal: lean bulk, strength over size. Fasting 16:8 (5:30pm–9:30am). HIIT at 8am fasted. Supplements: collagen+vit C 7:15am, algae omega-3+D3/K2 at breakfast, magnesium glycinate at night.
+
+PHASE: Weeks 5–8 (July 14–Aug 10, 2026). Alt index: ${ST.altIndex} (${altV()} today).
+TRAINING (Mon/Wed/Fri) — B1: Tibialis raises (standing then seated 15lb), Patrick step 4-5" + isometric knee hold (heel flat throughout), Alt: ATG split squat(A)/Hack squat 10lb(B), Alt: Single leg RDL 20lb(A)/Barbell RDL 60-80lb(B). B2 Alt: A=Pull ups(3-4 unassisted+31lb assist, fixed bar)+TRX rows, B=Pike push ups+Dips. B3: Dead bug 20lb+Copenhagen knee 20sec+Hyperextensions.
+OFF DAYS: L-sit (approaching full both legs straight 10sec), wrist curls 12lb, farmers 20kg/40sec, calf raises 2x45lb/8, alt: bent knee calf(A)/hip flexor KB on foot(B). Hoist captain's chair available. Tue=HIIT Johnny G Spirit, Thu=Basketball Option 2, Sat=Deep stretch 9 stretches.
+BESTS: Pull ups 3-4 unassisted, dips 5 BW, hack squat 10lb, barbell RDL 80lb/8, single leg RDL 20lb, L-sit both legs 10sec, farmers 20kg/40sec, calf 2x45lb/8.
+VASTUS LATERALIS: Mild weakness ACL side. Hack squat outer quad focus addresses this. Reassess week 8.
+ACL: ACL leg first always. No weight increase if ACL leg lags.
+GOALS: Muscle up, handstand, archer push ups, full L-sit.
+SESSIONS:\n${recent||'None yet.'}
+Direct, specific, under 200 words. Use actual numbers.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':ST.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:sys,messages:ST.chat.map(m=>({role:m.r==='u'?'user':'assistant',content:m.c}))})
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Something went wrong. Please try again.';
+    ST.chat.push({r:'a',c:reply}); persist();
+  } catch(e) {
+    ST.chat.push({r:'a',c:'Connection error. Check your API key and try again.'}); persist();
+  }
+
+  if (btn) btn.disabled = false;
+  renderCoach();
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+function renderSettings() {
+  document.getElementById('p-settings').innerHTML = `
+    <div class="card">
+      <div class="card-title">Storage</div>
+      <div class="srow">
+        <div><div class="slbl">localStorage</div><div class="ssub">Persists permanently on Safari home screen</div></div>
+        <span class="status-on">✓ Active</span>
+      </div>
+      <div class="srow">
+        <div><div class="slbl">Autosave</div><div class="ssub">Every set and exercise saves instantly</div></div>
+        <span class="status-on">✓ On</span>
+      </div>
+      <div class="srow" style="border:none">
+        <div><div class="slbl">Backup reminder</div><div class="ssub">Export JSON weekly to protect your data</div></div>
+        <span class="status-warn">⚠ Weekly</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Phase</div>
+      <div class="phase-toggle">
+        ${PHASES.map((p,i)=>`<div class="phase-opt${ST.phase===i?' on':''}" onclick="setPhase(${i})">${p.label}</div>`).join('')}
+      </div>
+      <div style="font-size:12px;color:var(--text3)">Current: ${PHASES[ST.phase]?.name} phase. Future phases load program data automatically when selected.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">API key</div>
+      <input type="password" class="api-inp" id="settKey" placeholder="sk-ant-..." value="${ST.apiKey||''}">
+      <button class="api-save" onclick="saveApiSett()">Save key</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Stats</div>
+      <div class="srow"><div class="slbl">Sessions logged</div><span class="sval">${ST.sessions.length}</span></div>
+      <div class="srow"><div class="slbl">Current streak</div><span class="sval">${calcStreak()} days</span></div>
+      <div class="srow"><div class="slbl">Alt index</div><span class="sval">${ST.altIndex} (${altV()} today)</span></div>
+      <div class="srow" style="border:none"><div class="slbl">Last session</div><span class="sval">${ST.sessions.length?new Date(ST.sessions[ST.sessions.length-1].date).toLocaleDateString():'—'}</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Export data</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px">All exports go directly to your device. Your data never leaves your phone.</div>
+      <div class="export-grid">
+        <button class="export-btn" onclick="exportJSON()">📤 Export JSON<br><span style="font-size:10px;color:var(--text3)">Raw data file</span></button>
+        <button class="export-btn" onclick="exportReport()">📄 Export report<br><span style="font-size:10px;color:var(--text3)">Readable text</span></button>
+        <button class="export-btn" onclick="copyData()">📋 Copy data<br><span style="font-size:10px;color:var(--text3)">To clipboard</span></button>
+        <button class="export-btn" onclick="triggerImport()">📥 Import JSON<br><span style="font-size:10px;color:var(--text3)">Restore backup</span></button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+    </div>
+    <button class="btn btn-danger" onclick="clearData()">🗑 Clear all session data</button>
+  `;
+}
+
+function setPhase(i) {
+  ST.phase = i; persist(); renderSettings();
+}
+
+function saveApiSett() {
+  const k = document.getElementById('settKey')?.value.trim();
+  if (!k) return;
+  ST.apiKey = k; persist(); alert('API key saved.');
+}
+
+function exportJSON() {
+  const a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify({state:ST, session:SESS}, null, 2));
+  a.download = 'grind_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+}
+
+function exportReport() {
+  const lines = ['Grind — Session Report', 'Generated: '+new Date().toLocaleString(), '', 'Sessions: '+ST.sessions.length, 'Phase: '+PHASES[ST.phase]?.label, 'Alt index: '+ST.altIndex, '', '=== SESSION HISTORY ==='];
+  ST.sessions.forEach(s => lines.push(new Date(s.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' — '+s.type+' — '+s.exCount+' exercises'));
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(lines.join('\n'));
+  a.download = 'grind_report_' + new Date().toISOString().split('T')[0] + '.txt';
+  a.click();
+}
+
+function copyData() {
+  const d = JSON.stringify({state:ST, session:SESS}, null, 2);
+  navigator.clipboard?.writeText(d).then(()=>alert('Data copied to clipboard.')).catch(()=>alert('Use Export JSON instead.'));
+}
+
+function triggerImport() {
+  document.getElementById('importFile')?.click();
+}
+
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.state) { ST = {...ST, ...data.state}; }
+      if (data.session && data.session.active) { SESS = {...SESS, ...data.session}; }
+      persist();
+      renderSettings();
+      renderDash();
+      alert('Data imported successfully. ' + (ST.sessions.length) + ' sessions restored.');
+    } catch(err) { alert('Import failed. Make sure you selected a valid Grind JSON export file.'); }
+  };
+  reader.readAsText(file);
+}
+
+function clearData() {
+  if (!confirm('Clear all session data? API key and settings are kept.')) return;
+  ST.sessions = []; ST.chat = []; ST.altIndex = 0;
+  SESS = {active:false, exDone:{}, setData:{}, startTime:null};
+  extraSets = {};
+  persist(); renderSettings(); renderDash();
+  alert('Session data cleared.');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+loadData();
+renderDash();
+</script>
+</body>
+</html>
