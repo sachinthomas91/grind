@@ -39,12 +39,13 @@ textarea,input,select{font-family:inherit}
 .btn{width:100%;border:none;border-radius:var(--r2);padding:12px;font-size:14px;font-weight:700;cursor:pointer;display:block;text-align:center}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:active{opacity:.85}
-.btn-resume{background:var(--accent2);color:#fff;margin-bottom:8px}
+.btn-resume{background:var(--accent2);color:#fff}
 .btn-discard{background:transparent;border:1px solid var(--text3);color:var(--text2);font-size:12px;padding:9px}
 .btn-save{background:var(--accent);color:#fff;font-size:15px;padding:14px;margin-top:20px}
 .btn-green{background:var(--green);color:#fff;padding:10px;font-size:13px;margin-top:10px}
 .btn-danger{background:transparent;border:1px solid var(--red);color:var(--red);margin-top:16px}
 .btn-ghost{background:var(--surf2);border:1px solid var(--border);color:var(--text2);padding:10px}
+.btn-edit{background:rgba(79,142,247,.12);border:1px solid var(--accent);color:var(--accent);font-size:12px;padding:8px;border-radius:var(--r2);cursor:pointer}
 .ex-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px}
 .ex-row:last-child{border:none}
 .ex-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0}
@@ -93,20 +94,22 @@ textarea,input,select{font-family:inherit}
 .comment-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
 .comment-inp{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:9px 10px;color:var(--text);font-size:13px;resize:none;min-height:60px;line-height:1.5}
 .comment-inp:focus{outline:none;border-color:var(--accent)}
-.comment-saved{font-size:11px;color:var(--green);margin-top:4px;display:none}
 .session-note-card{background:var(--surf);border:1px solid var(--accent2);border-radius:var(--r);padding:14px;margin-bottom:14px}
 .session-note-lbl{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px}
 .session-note-inp{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px;color:var(--text);font-size:13px;resize:none;min-height:60px;line-height:1.5}
 .session-note-inp:focus{outline:none;border-color:var(--accent2)}
 .resume-banner{background:rgba(124,92,191,.12);border:1px solid var(--accent2);border-radius:var(--r);padding:14px;margin-bottom:10px}
 .resume-actions{display:grid;grid-template-columns:2fr 1fr;gap:8px}
-.hist-item{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.hist-item{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.hist-item:active{border-color:var(--accent)}
 .hist-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
 .hist-date{font-size:13px;font-weight:700}
 .hist-type{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
 .hist-sum{font-size:12px;color:var(--text2)}
 .hist-comment{font-size:11px;color:var(--accent);font-style:italic;margin-top:4px;background:var(--surf2);border-radius:var(--r2);padding:5px 8px;border-left:2px solid var(--accent)}
 .hist-note{font-size:11px;color:var(--accent2);font-style:italic;margin-top:4px;background:var(--surf2);border-radius:var(--r2);padding:5px 8px;border-left:2px solid var(--accent2)}
+.hist-edit-hint{font-size:10px;color:var(--text3);margin-top:6px;text-align:right}
+.edit-banner{background:rgba(79,142,247,.12);border:1px solid var(--accent);border-radius:var(--r);padding:14px;margin-bottom:14px}
 .api-box{background:rgba(245,166,35,.08);border:1px solid var(--amber);border-radius:var(--r);padding:14px;margin-bottom:14px}
 .api-inp{width:100%;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:10px;color:var(--text);font-size:12px;font-family:monospace;margin-bottom:8px}
 .api-inp:focus{outline:none;border-color:var(--accent)}
@@ -146,13 +149,6 @@ textarea,input,select{font-family:inherit}
 .chart-title{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 .chart-empty{text-align:center;padding:30px;color:var(--text3);font-size:13px}
 .chart-axis-label{font-size:9px;fill:#8b90a7}
-.chart-line-weight{stroke:#4f8ef7;stroke-width:2;fill:none}
-.chart-line-reps{stroke:#3ecf8e;stroke-width:2;fill:none}
-.chart-dot-weight{fill:#4f8ef7}
-.chart-dot-reps{fill:#3ecf8e}
-.chart-legend{display:flex;gap:12px;margin-top:8px}
-.chart-legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)}
-.chart-legend-dot{width:8px;height:8px;border-radius:50%}
 .vol-bar{fill:rgba(79,142,247,.6)}
 </style>
 </head>
@@ -175,8 +171,8 @@ textarea,input,select{font-family:inherit}
 </div>
 
 <script>
-const SK='grind_v5';
-const SEK='grind_sess_v5';
+const SK='grind_v6';
+const SEK='grind_sess_v6';
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const PHASES=[{label:'Weeks 1–4',name:'Foundation'},{label:'Weeks 5–8',name:'Strength'},{label:'Weeks 9–12',name:'Power'},{label:'Weeks 13–16',name:'Performance'}];
 
@@ -192,53 +188,53 @@ const PROG={
   b1:[
     {n:'Tibialis raises — standing',m:'1×15–20 reps',s:1,r:18,w:0,note:'Activation set. Standing wall version. Toes up.'},
     {n:'Tibialis raises — seated weighted',m:'2×10–12 reps',s:2,r:10,w:15,note:'Leg straight extended. 15lb on foot or shin.'},
-    {n:'Patrick step — elevated platform',m:'3×10 each leg',s:3,r:10,w:0,acl:true,note:'6 inch platform. 4–5 sec down. Heel stays flat. ACL leg first.'},
-    {n:'Isometric knee forward hold',m:'3 holds × 5 sec each leg',s:3,r:5,w:0,acl:true,note:'Max effort 5-sec push. Knee over toes, heel grounded. Not counted as full training volume — tendon conditioning, not hypertrophy work.'},
+    {n:'Patrick step — elevated platform',m:'3×10 each leg',s:3,r:10,w:0,acl:true,note:'4 inch platform while correcting hip squaring. Sit straight DOWN not back — hips stay stacked over the knee, torso tall, heel flat. Reduced reps intentionally during correction.'},
+    {n:'Isometric knee forward hold',m:'3 holds × 5 sec each leg',s:3,r:5,w:0,acl:true,note:'Max effort 5-sec push. Not counted as full training volume — tendon conditioning, not hypertrophy work.'},
   ],
-  sqA:{n:'ATG split squat',m:'3×8 each leg',s:3,r:8,w:0,acl:true,alt:'A',note:'ACL leg forward on platform. Front heel stays flat. Back knee toward floor. 2 sec pause at bottom on ACL leg. Progressing 18"→12" platform.'},
-  sqB:{n:'Hack squat (Hackenschmidt)',m:'3×8–10 reps',s:3,r:8,w:10,alt:'B',note:'KB behind legs. 4 sec down, 1 hold, drive up. Hand on outer quad of ACL leg to cue vastus lateralis.'},
-  rdlA:{n:'Single leg RDL',m:'3×8 each leg',s:3,r:8,w:20,acl:true,alt:'A',note:'ACL leg planted first. Do not add weight if ACL leg lags.'},
-  rdlB:{n:'Barbell RDL',m:'3×8 reps',s:3,r:8,w:70,alt:'B',note:'Bilateral. 3 sec down. Never round lower back.'},
+  sqA:{n:'ATG split squat',m:'3×8 each leg',s:3,r:8,w:0,acl:true,alt:'A',id:'sq_atg',note:'ACL leg forward on platform. Progressing well — platform and weight both climbing independently. 2 sec pause at bottom on ACL leg.'},
+  sqB:{n:'Hack squat (Hackenschmidt)',m:'3×8–10 reps',s:3,r:8,w:10,alt:'B',id:'sq_hack',note:'KB behind legs. 4 sec down, 1 hold, drive up. Hand on outer quad of ACL leg to cue vastus lateralis.'},
+  rdlA:{n:'Single leg RDL',m:'3×8 each leg',s:3,r:8,w:20,acl:true,alt:'A',id:'rdl_single',note:'ACL leg planted first. Do not add weight if ACL leg lags.'},
+  rdlB:{n:'Barbell RDL',m:'3×8 reps',s:3,r:8,w:70,alt:'B',id:'rdl_barbell',note:'Bilateral. 3 sec down. Never round lower back.'},
   b2A:[
-    {n:'Pull ups',m:'3×5 reps',s:3,r:5,w:0,superset:true,note:'SUPERSET with TRX rows — do pull ups then immediately TRX rows same round, rest 90 sec, repeat. Fully unassisted achieved. Fixed bar on squat rack, not Cybex cable bar.'},
-    {n:'TRX rows',m:'3×8–10 reps',s:3,r:8,w:0,superset:true,note:'SUPERSET with pull ups — immediately after pull ups each round. More horizontal = harder.'},
+    {n:'Pull ups',m:'3–4 sets to 15 total reps',s:4,r:5,w:0,superset:true,note:'SUPERSET with TRX rows. Fully unassisted achieved — currently working toward evening out set distribution (e.g. 5-4-4-2 → more even). Try longer rest (2–2.5 min) between sets rather than front-loading set 1.'},
+    {n:'TRX rows',m:'3×8–10 reps',s:3,r:8,w:0,superset:true,note:'SUPERSET with pull ups — immediately after pull ups each round.'},
   ],
   b2B:[
     {n:'Pike push ups',m:'3×5–8 reps',s:3,r:6,w:0,note:'Hips high, head toward floor. Handstand foundation.'},
-    {n:'Dips — progressive',m:'3 sets',s:3,r:8,w:0,note:'Progressing toward weighted. Full lockout top, full depth bottom.'},
+    {n:'Dips — progressive',m:'3 sets',s:3,r:8,w:0,note:'Progressing toward weighted.'},
   ],
   b3:[
     {n:'Dead bug with weight',m:'3×10 reps',s:3,r:10,w:20,note:'Both legs extended. Lower back FLAT throughout.'},
-    {n:'Copenhagen plank — knee version',m:'3×20 sec each side',s:3,r:20,w:0,acl:true,note:'Top knee on bench (20" platform). Stack hips vertically. Target 35 sec by week 8.'},
-    {n:'Hyperextensions',m:'3×10–12 reps',s:3,r:10,w:0,note:'2 sec up, 1 hold, 2 sec down. Squeeze glutes at top. Also doing 2 sets isometric cantilever hold — 40 sec.'},
-    {n:'Glute bridge / hip thrust',m:'3×12–15 reps',s:3,r:12,w:0,note:'NEW. Bodyweight to start. Squeeze glutes hard at top, 1 sec pause. Direct glute max work — largest muscle in the body, supports resting metabolic rate and complements hip hinge work.'},
+    {n:'Copenhagen plank — full extension, bottom leg lifted bent',m:'3×20+ sec each side',s:3,r:20,w:0,acl:true,note:'Foot on bench (full extension), bottom leg lifted in bent running position, not resting on floor. Build duration toward 40-45 sec before adding load or converting to dynamic raises.'},
+    {n:'Hyperextensions',m:'3×10–12 reps',s:3,r:10,w:0,note:'2 sec up, 1 hold, 2 sec down. Also 2 sets isometric cantilever hold — 40 sec.'},
+    {n:'Glute bridge / hip thrust',m:'3×12–15 reps',s:3,r:12,w:0,note:'Squeeze glutes hard at top, 1 sec pause. Log actual reps/weight — currently under-logged.'},
   ],
   skill:[
     {n:'Wrist warm up',m:'2 minutes',note:'Circles both directions, forward and backward stretches.'},
-    {n:'L-sit — both legs straight',m:'3–4×20 sec + 10 raises',s:4,r:20,w:0,note:'Press DOWN hard. 20 sec hold + 10 rep raises each set.'},
+    {n:'L-sit — full hold, feet off ground',m:'3×build duration',s:3,r:1,w:0,note:'MILESTONE: first full unsupported L-sit achieved, both legs straight, feet off ground. Currently 3x1 sec. Build duration slowly — reps before duration, duration before adding difficulty. Do not add a 4th set yet.'},
     {n:'L-sit — single leg extended',m:'3×5–8 reps each',s:3,r:6,w:0,note:'One leg straight out, one tucked. Alternate.'},
   ],
   forearm:[
     {n:'Wrist curls',m:'3×10 reps',s:3,r:10,w:12,note:'Forearm on thigh, curl wrist upward.'},
     {n:'Reverse wrist curls',m:'3×10 reps',s:3,r:10,w:12,note:'Same position, curl wrist downward.'},
-    {n:'Wrist rotation with dumbbell',m:'3×12 reps',s:3,r:12,w:12,note:'Neutral grip. Rotate wrist through full range both directions.'},
-    {n:'Brachioradialis raises — neutral grip',m:'3×12 reps',s:3,r:12,w:12,note:'Neutral grip dumbbell or cable raise. Elbow tucked.'},
-    {n:'Farmers hold',m:'3×40 sec',s:3,r:40,w:53,note:'53lb each hand (106lb total). Progress to 45 sec before adding weight.'},
+    {n:'Wrist rotation with dumbbell',m:'3×12 reps — PAUSED',s:3,r:12,w:12,note:'PAUSED for 1 week due to mild elbow pain near upper forearm insertion. Do not perform until cleared. Reintroduce one at a time after pain-free week.'},
+    {n:'Brachioradialis raises — neutral grip',m:'3×12 reps — PAUSED',s:3,r:12,w:12,note:'PAUSED for 1 week due to mild elbow pain. Same reintroduction plan as wrist rotation above.'},
+    {n:'Farmers hold',m:'3×40 sec',s:3,r:40,w:53,note:'53lb each hand (106lb total), occasional heavier attempts up to 90lb/4reps. Also experimenting with farmers walk (dynamic) and plate pinch grip variation (25lb plates) — plate pinch trains a different, weaker grip pattern than kettlebell crush grip. Keep kettlebell as primary once elbow settles.'},
   ],
   calf:[
-    {n:'Calf raise — straight angle',m:'1×8 each leg',s:1,r:8,w:90,acl:true,note:'90lb single leg. Foot straight. ACL leg first. Slow negative.'},
-    {n:'Calf raise — inward angle',m:'1×8 each leg',s:1,r:8,w:90,note:'90lb single leg. Toes pointing in — shifts to outer gastrocnemius head and peroneals.'},
-    {n:'Calf raise — outward angle',m:'1×8 each leg',s:1,r:8,w:90,note:'90lb single leg. Toes pointing out — shifts to inner gastrocnemius head.'},
-    {n:'Calf raise — bilateral finisher',m:'1×6–8 reps',s:1,r:8,w:180,note:'180lb both legs together. Full range, full contraction.'},
-    {n:'Calf raise — bodyweight endurance set',m:'1×20–25 reps',s:1,r:22,w:0,acl:true,note:'Bodyweight single leg. 3 sec slow negative. Endurance and type 1 fiber focus. ACL leg first.'},
+    {n:'Calf raise — straight angle',m:'1×8 each leg',s:1,r:8,w:110,acl:true,note:'Progressing — now at 110lb single leg. ACL leg first. Slow negative.'},
+    {n:'Calf raise — inward angle',m:'1×8 each leg',s:1,r:8,w:110,note:'110lb single leg. Outer gastrocnemius head and peroneals.'},
+    {n:'Calf raise — outward angle',m:'1×8 each leg',s:1,r:8,w:110,note:'110lb single leg. Inner gastrocnemius head.'},
+    {n:'Calf raise — bilateral finisher',m:'1×6–8 reps',s:1,r:8,w:230,note:'Progressing — now at 230lb both legs together.'},
+    {n:'Calf raise — bodyweight endurance set',m:'1×20–25 reps',s:1,r:22,w:0,acl:true,note:'Bodyweight single leg. 3 sec slow negative. ACL leg first.'},
   ],
-  altA:{n:'Bent knee calf raises',m:'3×12–15 reps',s:3,r:12,w:0,alt:'A',note:'Soleus focus. Knee bent 90°.'},
-  altB:{n:'Hip flexor KB raise',m:'3×10 each leg',s:3,r:10,w:0,acl:true,alt:'B',note:'KB locked on foot. Direct L-sit carryover. Also works glute med on standing leg for balance.'},
-  glute:[{n:'Lateral band walks',m:'2–3×10–15 steps each way',s:3,r:12,w:0,acl:true,note:'NEW. Band above knees. Quarter squat, chest up, weight in heels. Never let band go slack. Direct glute med work — supports knee tracking and prevents valgus collapse on ACL side.'}],
-  adductor:[{n:'Cable/band adductor pull',m:'2–3×12–15 reps',s:3,r:14,w:0,acl:true,note:'NEW. Stand sideways to anchor, pull working leg across body against resistance. Full range dynamic loading — complements Copenhagen plank\'s isometric work. Supports knee valgus prevention.'}],
+  altA:{n:'Bent knee calf raises',m:'3×12–15 reps',s:3,r:12,w:0,alt:'A',id:'alt_calf',note:'Soleus focus. Knee bent 90°.'},
+  altB:{n:'Hip flexor KB raise',m:'3×10 each leg',s:3,r:10,w:0,acl:true,alt:'B',id:'alt_hipflexor',note:'KB locked on foot. Direct L-sit carryover. Also works glute med on standing leg.'},
+  glute:[{n:'Lateral band walks',m:'2–3×10–15 steps each way',s:3,r:12,w:0,acl:true,note:'Progressed to mid-foot band placement (ahead of typical progression). Quarter squat, chest up, weight in heels.'}],
+  adductor:[{n:'Cable/band adductor pull',m:'2–3×12–15 reps',s:3,r:14,w:0,acl:true,note:'Full range dynamic loading, complements Copenhagen plank. Log resistance level used — currently under-logged.'}],
   hiit:[{n:'HIIT — Spin bike (Johnny G Spirit)',m:'~10 min total',note:'2 min warmup → 6 rounds 20/40 → 1 min cool down. Fasted.'}],
   ball:[{n:'Basketball — Option 2',m:'20–30 min',note:'70% shooting, 30% movement drills including Mikan drill.'}],
-  cycling:[{n:'Steady cycling',m:'10–15 min',note:'65–75% max HR. Consistent pace. 60–65rpm. Warms muscles before stretching.'}],
+  cycling:[{n:'Steady cycling',m:'10–15 min',note:'65–75% max HR. Consistent pace. 60–65rpm. Warms muscles before stretching. Also addresses Garmin High Aerobic training load shortage.'}],
   stretch:[
     {n:'Couch stretch',m:'60 sec each side',note:'Hip flexors. Highest priority.'},
     {n:'Anterior tibialis kneeling stretch',m:'45 sec each side',note:'Position 1 first.'},
@@ -247,7 +243,7 @@ const PROG={
     {n:'Calf stretch',m:'45 sec each side',note:'Prevents achilles tightness.'},
     {n:'Plantar fascia',m:'2 min',note:'Foot rolling or toe extension.'},
     {n:'Doorway chest and shoulder stretch',m:'30 sec each side',note:'Opens pecs and anterior deltoid.'},
-    {n:'Shoulder dislocates',m:'10 slow reps',note:'Entire shoulder girdle. Handstand foundation.'},
+    {n:'Shoulder dislocates',m:'10 slow reps',note:'Entire shoulder girdle.'},
     {n:'Dead hang',m:'30–60 seconds',note:'Decompresses spine.'},
   ],
 };
@@ -257,6 +253,7 @@ let SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,sessionN
 let timers={};
 let extraSets={};
 let removedSets={};
+let editingIndex=null; // index into ST.sessions when editing a past session, null = normal live session
 
 function computeDT(d){const w=(d||new Date()).getDay();if(w===0)return'rest';if(w===1||w===3||w===5)return'training';if(w===2)return'hiit';if(w===4)return'ball';return'stretch';}
 function getDT(){return SESS.active&&SESS.dayType?SESS.dayType:computeDT();}
@@ -267,7 +264,15 @@ function offAltV(){return ST.offAltIndex%2===0?'A':'B';}
 function persist(){try{localStorage.setItem(SK,JSON.stringify(ST));}catch(e){}try{localStorage.setItem(SEK,JSON.stringify(SESS));}catch(e){}}
 function loadData(){try{const s=localStorage.getItem(SK);if(s)ST={...ST,...JSON.parse(s)};}catch(e){}try{const s=localStorage.getItem(SEK);if(s){const d=JSON.parse(s);if(d.active)SESS={...SESS,...d};}}catch(e){}}
 
-function getLastTwoForExercise(exId){const results=[];for(let i=ST.sessions.length-1;i>=0&&results.length<2;i--){const sess=ST.sessions[i];if(sess.exData&&sess.exData[exId]){results.push({date:sess.date,type:sess.type,data:sess.exData[exId],comment:sess.comments?.[exId]||''});}}return results;}
+function getLastTwoForExercise(exId){
+  const results=[];
+  for(let i=ST.sessions.length-1;i>=0&&results.length<2;i--){
+    if(editingIndex!==null&&i===editingIndex)continue; // don't show the session being edited as its own "previous"
+    const sess=ST.sessions[i];
+    if(sess.exData&&sess.exData[exId]){results.push({date:sess.date,type:sess.type,data:sess.exData[exId],comment:sess.comments?.[exId]||''});}
+  }
+  return results;
+}
 
 function prevSessionsHtml(exId){
   const prev=getLastTwoForExercise(exId);if(!prev.length)return'';
@@ -342,7 +347,7 @@ function exCard(ex,id){
       ${ex.acl?'<div class="acl-box">⚡ ACL leg always goes first — every set, no exceptions.</div>':''}
       ${ex.superset?'<div class="superset-box">🔗 Superset — do this then immediately the paired exercise, then rest 90 sec.</div>':''}
       ${setsHtml}
-      <div class="comment-wrap"><div class="comment-lbl">📝 Session note</div><textarea class="comment-inp" placeholder="e.g. 12 inch platform, felt strong..." oninput="saveComment('${id}',this.value)">${comment}</textarea><div class="comment-saved" id="cs-${id}">✓ Saved</div></div>
+      <div class="comment-wrap"><div class="comment-lbl">📝 Session note</div><textarea class="comment-inp" placeholder="e.g. 12 inch platform, felt strong..." oninput="saveComment('${id}',this.value)">${comment}</textarea><div class="comment-saved" id="cs-${id}" style="font-size:11px;color:var(--green);margin-top:4px;display:none">✓ Saved</div></div>
       <button class="btn btn-green" onclick="markDone('${id}')">✓ Mark complete</button>
     </div>
   </div>`;
@@ -361,17 +366,61 @@ function toggleTimer(id){
   timers[id].iv=setInterval(()=>{s--;timers[id].secs=s;const disp=document.getElementById('td-'+id);if(disp)disp.textContent=s<=0?'Go!':Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');if(s<=0){clearInterval(timers[id].iv);timers[id].running=false;const b=document.getElementById('tb-'+id);if(b){b.textContent='Reset';b.classList.remove('stop');}}},1000);
 }
 
-function startSession(){const dt=computeDT();SESS={active:true,exDone:{},setData:{},startTime:new Date().toISOString(),dayType:dt,sessionNote:''};extraSets={};removedSets={};persist();switchTab('workout');}
+function startSession(){const dt=computeDT();SESS={active:true,exDone:{},setData:{},startTime:new Date().toISOString(),dayType:dt,sessionNote:''};extraSets={};removedSets={};editingIndex=null;persist();switchTab('workout');}
 
 function discardSession(){
   if(!confirm('Discard this unfinished session? All logged data for it will be lost.'))return;
   SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,sessionNote:''};
-  extraSets={};removedSets={};persist();renderDash();
+  extraSets={};removedSets={};editingIndex=null;persist();renderDash();
+}
+
+// ─── EDIT PAST SESSION ────────────────────────────────────────────────────────
+function editSession(idx){
+  const s=ST.sessions[idx];
+  if(!s)return;
+  // reconstruct exDone from exData
+  const exDone={};
+  Object.keys(s.exData||{}).forEach(k=>{if(s.exData[k].done)exDone[k]=true;});
+  // reconstruct setData from exData sets + comments
+  const setData={};
+  Object.keys(s.exData||{}).forEach(k=>{
+    const sets=s.exData[k].sets||[];
+    sets.forEach((st,i)=>{
+      if(st.r)setData[`${k}-${i}-reps`]=st.r;
+      if(st.w)setData[`${k}-${i}-wt`]=st.w;
+      if(st.done)setData[`${k}-${i}-done`]=true;
+    });
+  });
+  Object.keys(s.comments||{}).forEach(k=>{setData[`${k}-comment`]=s.comments[k];});
+  // figure out extraSets needed (if more sets logged than the default program count)
+  extraSets={};removedSets={};
+  Object.keys(s.exData||{}).forEach(k=>{
+    const loggedCount=(s.exData[k].sets||[]).length;
+    // we don't know default count per id easily here without a lookup; workout render handles gracefully since sets beyond default just won't show unless extraSets set
+  });
+  SESS={active:true,exDone,setData,startTime:s.startTime||s.date,dayType:s.dayType||dtFromType(s.type),sessionNote:s.sessionNote||''};
+  editingIndex=idx;
+  persist();
+  switchTab('workout');
+}
+
+function dtFromType(type){
+  if(type.startsWith('Training'))return'training';
+  if(type==='HIIT + Skill')return'hiit';
+  if(type==='Basketball + Skill')return'ball';
+  if(type==='Stretch + Skill')return'stretch';
+  return'training';
+}
+
+function cancelEdit(){
+  if(!confirm('Discard changes to this session? Nothing will be saved.'))return;
+  SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,sessionNote:''};
+  extraSets={};removedSets={};editingIndex=null;persist();switchTab('history');
 }
 
 function collectExData(){
   const exData={};
-  const allExIds=['wu0','wu1','wu2','wu3','wu4','wu5','b10','b11','b12','b13','sq0','rdl0','b20','b21','b30','b31','b32','b33','sk0','sk1','sk2','fa0','fa1','fa2','fa3','fa4','cf0','cf1','cf2','cf3','cf4','alt0','gl0','ad0','hi0','ba0','cy0','st0','st1','st2','st3','st4','st5','st6','st7','st8'];
+  const allExIds=['wu0','wu1','wu2','wu3','wu4','wu5','b10','b11','b12','b13','sq_atg','sq_hack','rdl_single','rdl_barbell','b20','b21','b30','b31','b32','b33','sk0','sk1','sk2','fa0','fa1','fa2','fa3','fa4','cf0','cf1','cf2','cf3','cf4','alt_calf','alt_hipflexor','gl0','ad0','hi0','ba0','cy0','st0','st1','st2','st3','st4','st5','st6','st7','st8'];
   allExIds.forEach(id=>{
     const sets=[];
     for(let i=0;i<25;i++){const reps=SESS.setData[`${id}-${i}-reps`];const wt=SESS.setData[`${id}-${i}-wt`];const done=SESS.setData[`${id}-${i}-done`];if(reps||wt||done)sets.push({r:reps||'',w:wt||'',done:!!done});}
@@ -385,11 +434,25 @@ function finishSession(){
   const type=dt==='training'?`Training — ${av==='A'?'ATG/Pull ups':'Hack/Pike push ups'}`:dt==='hiit'?'HIIT + Skill':dt==='ball'?'Basketball + Skill':'Stretch + Skill';
   const comments={};Object.keys(SESS.setData).forEach(k=>{if(k.endsWith('-comment')&&SESS.setData[k])comments[k.replace('-comment','')]=SESS.setData[k];});
   const exData=collectExData();
-  ST.sessions.push({date:new Date().toISOString(),type,exCount:Object.keys(SESS.exDone).length,comments,exData,sessionNote:SESS.sessionNote||''});
-  if(dt==='training')ST.trainAltIndex++;else if(dt!=='rest')ST.offAltIndex++;
+  const startTime=SESS.startTime||new Date().toISOString();
+
+  if(editingIndex!==null){
+    // overwrite existing session, keep its original date/type/startTime
+    const existing=ST.sessions[editingIndex];
+    ST.sessions[editingIndex]={...existing,exCount:Object.keys(SESS.exDone).length,comments,exData,sessionNote:SESS.sessionNote||''};
+  } else {
+    // new session — date reflects START time, not completion time
+    ST.sessions.push({date:startTime,startTime,type,exCount:Object.keys(SESS.exDone).length,comments,exData,sessionNote:SESS.sessionNote||''});
+    if(dt==='training')ST.trainAltIndex++;else if(dt!=='rest')ST.offAltIndex++;
+  }
+
   SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,sessionNote:''};
-  extraSets={};removedSets={};persist();
-  switchTab('dash');setTimeout(()=>alert('Session saved. Great work.'),100);
+  extraSets={};removedSets={};
+  const wasEditing=editingIndex!==null;
+  editingIndex=null;
+  persist();
+  switchTab(wasEditing?'history':'dash');
+  setTimeout(()=>alert(wasEditing?'Session updated.':'Session saved. Great work.'),100);
 }
 
 function renderDash(){
@@ -399,21 +462,22 @@ function renderDash(){
   const up=av==='A'?'Pull ups + TRX rows':'Pike push ups + Dips';
   const offAlt=offAltV()==='A'?'Bent knee calf':'Hip flexor KB raise';
   const today=new Date(),last=ST.sessions[ST.sessions.length-1];
-  const isStaleSession=SESS.active&&SESS.dayType&&SESS.dayType!==computeDT();
+  const isStaleSession=SESS.active&&SESS.dayType&&SESS.dayType!==computeDT()&&editingIndex===null;
   let badge='rest',title='Full rest',sub='Recovery only. See you tomorrow.',rows=[];
   if(dt==='training'){badge='train';title=DAYS[today.getDay()]+' — Full body';sub='B2: '+up+' · Legs: '+sq+' + '+rdl;rows=[{n:'Warm up',b:'Warm',id:'wu0'},{n:'Tibialis raises',b:'B1',id:'b10'},{n:'Patrick step + Isometric hold',b:'B1',id:'b12',acl:true},{n:sq,b:'B1',id:'sq0',alt:av},{n:rdl,b:'B1',id:'rdl0',alt:rv==='single'?'A':'B'},{n:av==='A'?'Pull ups':'Pike push ups',b:'B2',id:'b20'},{n:av==='A'?'TRX rows':'Dips',b:'B2',id:'b21'},{n:'Core: Dead bug/Copenhagen/Hyperext/Glute',b:'B3',id:'b30'}];}
   else if(dt==='ball'){badge='off';title='Basketball + skill + accessory';sub='Basketball first · L-sit · Forearm/calf/glute/adductor';rows=[{n:'Basketball — Option 2',b:'Cardio',id:'ba0'},{n:'L-sit skill work',b:'Skill',id:'sk1'},{n:'Forearm work',b:'Access',id:'fa0'},{n:'Calf raises (5 sets, 3 angles)',b:'Access',id:'cf0',acl:true},{n:offAlt,b:'Access',id:'alt0',alt:offAltV()},{n:'Lateral band walks',b:'Access',id:'gl0'},{n:'Adductor pulls',b:'Access',id:'ad0'}];}
-  else if(dt==='hiit'){badge='off';title='HIIT + skill + accessory';sub='HIIT · L-sit · Forearm/calf/glute/adductor';rows=[{n:'L-sit skill work',b:'Skill',id:'sk1'},{n:'Forearm work',b:'Access',id:'fa0'},{n:'Calf raises (5 sets, 3 angles)',b:'Access',id:'cf0',acl:true},{n:offAlt,b:'Access',id:'alt0',alt:offAltV()},{n:'Lateral band walks',b:'Access',id:'gl0'},{n:'Adductor pulls',b:'Access',id:'ad0'},{n:'HIIT — Spin bike',b:'Cardio',id:'hi0'}];}
+  else if(dt==='hiit'){badge='off';title='HIIT + skill + accessory';sub='L-sit · Forearm/calf/glute/adductor · HIIT';rows=[{n:'L-sit skill work',b:'Skill',id:'sk1'},{n:'Forearm work',b:'Access',id:'fa0'},{n:'Calf raises (5 sets, 3 angles)',b:'Access',id:'cf0',acl:true},{n:offAlt,b:'Access',id:'alt0',alt:offAltV()},{n:'Lateral band walks',b:'Access',id:'gl0'},{n:'Adductor pulls',b:'Access',id:'ad0'},{n:'HIIT — Spin bike',b:'Cardio',id:'hi0'}];}
   else if(dt==='stretch'){badge='off';title='Stretch + skill + accessory';sub='Cycling first · Stretch · L-sit · Accessory';rows=[{n:'Steady cycling 10–15 min',b:'Cardio',id:'cy0'},{n:'Deep stretch (9 stretches)',b:'Stretch',id:'st0'},{n:'L-sit skill work',b:'Skill',id:'sk1'},{n:'Forearm work',b:'Access',id:'fa0'},{n:'Calf raises (5 sets, 3 angles)',b:'Access',id:'cf0',acl:true},{n:offAlt,b:'Access',id:'alt0',alt:offAltV()},{n:'Lateral band walks',b:'Access',id:'gl0'},{n:'Adductor pulls',b:'Access',id:'ad0'}];}
   const exRows=rows.map(r=>`<div class="ex-row"><div class="ex-dot${SESS.exDone[r.id]?' done':''}" data-ex="${r.id}"></div><span>${r.n}</span>${r.alt?altBadge(r.alt):''}${r.acl?'<span class="acl-b">ACL</span>':''}<span class="blk-tag">${r.b}</span></div>`).join('');
   document.getElementById('p-dash').innerHTML=`
-    ${SESS.active?`<div class="resume-banner">
+    ${editingIndex!==null?`<div class="edit-banner"><div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">✏️ Editing a past session</div><div style="font-size:12px;color:var(--text2)">Go to the Workout tab to make changes, then save.</div></div>`:''}
+    ${SESS.active&&editingIndex===null?`<div class="resume-banner">
       <div style="font-size:13px;font-weight:700;color:#7c5cbf;margin-bottom:6px">⏸ Session in progress${isStaleSession?' (from '+SESS.dayType+' day)':''}</div>
       <div style="font-size:12px;color:var(--text2);margin-bottom:10px">${Object.keys(SESS.exDone).length} exercises completed. Progress is saved.</div>
       <div class="resume-actions"><button class="btn btn-resume" style="margin-bottom:0" onclick="switchTab('workout')">Resume session →</button><button class="btn btn-discard" onclick="discardSession()">Discard</button></div>
     </div>`:''}
     <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</div>
-    <div class="card"><span class="badge ${badge}">${badge==='train'?'Training day':badge==='off'?'Off day':'Rest day'}</span><div style="font-size:18px;font-weight:700;margin-bottom:2px">${title}</div><div style="font-size:12px;color:var(--text2);margin-bottom:14px">${sub}</div>${computeDT()!=='rest'&&!SESS.active?'<button class="btn btn-primary" onclick="startSession()">▶ Start session</button>':''}${SESS.active&&!isStaleSession?'<button class="btn btn-ghost" onclick="switchTab(\'workout\')">Continue session →</button>':''}</div>
+    <div class="card"><span class="badge ${badge}">${badge==='train'?'Training day':badge==='off'?'Off day':'Rest day'}</span><div style="font-size:18px;font-weight:700;margin-bottom:2px">${title}</div><div style="font-size:12px;color:var(--text2);margin-bottom:14px">${sub}</div>${computeDT()!=='rest'&&!SESS.active?'<button class="btn btn-primary" onclick="startSession()">▶ Start session</button>':''}${SESS.active&&!isStaleSession&&editingIndex===null?'<button class="btn btn-ghost" onclick="switchTab(\'workout\')">Continue session →</button>':''}</div>
     <div class="stats-grid"><div class="stat"><div class="stat-val">${ST.sessions.length}</div><div class="stat-label">Sessions logged</div></div><div class="stat"><div class="stat-val">${calcStreak()}</div><div class="stat-label">Day streak</div></div></div>
     <div class="card"><div class="card-title">Today's plan</div>${exRows}</div>
     ${last?`<div class="card"><div class="card-title">Last session</div><div style="font-size:12px;color:var(--text2)">${new Date(last.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div><div style="font-size:14px;font-weight:600;margin-top:2px">${last.type}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${last.exCount} exercises</div></div>`:''}`;
@@ -422,16 +486,20 @@ function renderDash(){
 function renderWorkout(){
   const dt=getDT(),av=altV(),rv=rdlV();
   let html='';
-  if(dt==='rest'){html='<div class="empty"><div class="empty-icon">😴</div>Rest day — full recovery.</div>';document.getElementById('p-workout').innerHTML=html;return;}
+  if(dt==='rest'&&editingIndex===null){html='<div class="empty"><div class="empty-icon">😴</div>Rest day — full recovery.</div>';document.getElementById('p-workout').innerHTML=html;return;}
 
-  html+=`<div class="autosave-bar"><div class="autosave-dot"></div>${SESS.active?'Progress saves automatically — safe to close and reopen':'Tap Start session on Today tab to enable autosave'}</div>`;
-  html+=`<div class="session-note-card"><div class="session-note-lbl">📝 General note for today</div><textarea class="session-note-inp" placeholder="Overall thoughts on today's session — energy, sleep, how the day felt..." oninput="saveSessionNote(this.value)">${SESS.sessionNote||''}</textarea><div class="comment-saved" id="sessionNoteSaved">✓ Saved</div></div>`;
+  if(editingIndex!==null){
+    html+=`<div class="edit-banner"><div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px">✏️ Editing session from ${new Date(ST.sessions[editingIndex].date).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}</div><div style="font-size:12px;color:var(--text2)">Changes overwrite the original entry when saved.</div></div>`;
+  } else {
+    html+=`<div class="autosave-bar"><div class="autosave-dot"></div>${SESS.active?'Progress saves automatically — safe to close and reopen':'Tap Start session on Today tab to enable autosave'}</div>`;
+  }
+  html+=`<div class="session-note-card"><div class="session-note-lbl">📝 General note for today</div><textarea class="session-note-inp" placeholder="Overall thoughts on today's session — energy, sleep, how the day felt..." oninput="saveSessionNote(this.value)">${SESS.sessionNote||''}</textarea><div class="comment-saved" id="sessionNoteSaved" style="font-size:11px;color:var(--green);margin-top:4px;display:none">✓ Saved</div></div>`;
 
   if(dt==='training'){
     html+=bsep('Warm up — 10 min');PROG.warmup.forEach((e,i)=>html+=exCard(e,'wu'+i));
     html+=bsep('Block 1 — ATG legs');PROG.b1.forEach((e,i)=>html+=exCard(e,'b1'+i));
-    html+=exCard(av==='A'?PROG.sqA:PROG.sqB,'sq0');
-    html+=exCard(rv==='single'?PROG.rdlA:PROG.rdlB,'rdl0');
+    html+=exCard(av==='A'?PROG.sqA:PROG.sqB,av==='A'?'sq_atg':'sq_hack');
+    html+=exCard(rv==='single'?PROG.rdlA:PROG.rdlB,rv==='single'?'rdl_single':'rdl_barbell');
     html+=bsep('Block 2 — Upper body');(av==='A'?PROG.b2A:PROG.b2B).forEach((e,i)=>html+=exCard(e,'b2'+i));
     html+=bsep('Block 3 — Core + Glutes');PROG.b3.forEach((e,i)=>html+=exCard(e,'b3'+i));
   } else if(dt==='ball'){
@@ -439,39 +507,42 @@ function renderWorkout(){
     html+=bsep('Skill work — L-sit');PROG.skill.forEach((e,i)=>html+=exCard(e,'sk'+i));
     html+=bsep('Forearm');PROG.forearm.forEach((e,i)=>html+=exCard(e,'fa'+i));
     html+=bsep('Calf raises — 5 sets, 3 angles');PROG.calf.forEach((e,i)=>html+=exCard(e,'cf'+i));
-    html+=exCard(ST.offAltIndex%2===0?PROG.altA:PROG.altB,'alt0');
+    html+=exCard(offAltV()==='A'?PROG.altA:PROG.altB,offAltV()==='A'?'alt_calf':'alt_hipflexor');
     html+=bsep('Glutes and adductors');PROG.glute.forEach((e,i)=>html+=exCard(e,'gl'+i));PROG.adductor.forEach((e,i)=>html+=exCard(e,'ad'+i));
   } else if(dt==='hiit'){
     html+=bsep('Skill work — L-sit');PROG.skill.forEach((e,i)=>html+=exCard(e,'sk'+i));
     html+=bsep('Forearm');PROG.forearm.forEach((e,i)=>html+=exCard(e,'fa'+i));
     html+=bsep('Calf raises — 5 sets, 3 angles');PROG.calf.forEach((e,i)=>html+=exCard(e,'cf'+i));
-    html+=exCard(ST.offAltIndex%2===0?PROG.altA:PROG.altB,'alt0');
+    html+=exCard(offAltV()==='A'?PROG.altA:PROG.altB,offAltV()==='A'?'alt_calf':'alt_hipflexor');
     html+=bsep('Glutes and adductors');PROG.glute.forEach((e,i)=>html+=exCard(e,'gl'+i));PROG.adductor.forEach((e,i)=>html+=exCard(e,'ad'+i));
     html+=bsep('HIIT');PROG.hiit.forEach((e,i)=>html+=exCard(e,'hi'+i));
-  } else {
+  } else if(dt==='stretch'){
     html+=bsep('Steady cycling — 10–15 min');PROG.cycling.forEach((e,i)=>html+=exCard(e,'cy'+i));
     html+=bsep('Deep stretch');PROG.stretch.forEach((e,i)=>html+=exCard(e,'st'+i));
     html+=bsep('Skill work — L-sit');PROG.skill.forEach((e,i)=>html+=exCard(e,'sk'+i));
     html+=bsep('Forearm');PROG.forearm.forEach((e,i)=>html+=exCard(e,'fa'+i));
     html+=bsep('Calf raises — 5 sets, 3 angles');PROG.calf.forEach((e,i)=>html+=exCard(e,'cf'+i));
-    html+=exCard(ST.offAltIndex%2===0?PROG.altA:PROG.altB,'alt0');
+    html+=exCard(offAltV()==='A'?PROG.altA:PROG.altB,offAltV()==='A'?'alt_calf':'alt_hipflexor');
     html+=bsep('Glutes and adductors');PROG.glute.forEach((e,i)=>html+=exCard(e,'gl'+i));PROG.adductor.forEach((e,i)=>html+=exCard(e,'ad'+i));
+  } else {
+    // rest day but editing an old session that happens to be a rest-type — fallback: show nothing but allow save
   }
-  html+=`<button class="btn btn-save" onclick="finishSession()">💾 Save and complete session</button>`;
+  html+=`<button class="btn btn-save" onclick="finishSession()">💾 ${editingIndex!==null?'Save changes':'Save and complete session'}</button>`;
+  if(editingIndex!==null)html+=`<button class="btn btn-ghost" style="margin-top:8px" onclick="cancelEdit()">Cancel editing</button>`;
   document.getElementById('p-workout').innerHTML=html;
 }
 
 function renderHistory(){
-  const sessions=[...ST.sessions].reverse();
+  const sessions=ST.sessions.map((s,i)=>({...s,_idx:i})).reverse();
   if(!sessions.length){document.getElementById('p-history').innerHTML='<div class="empty"><div class="empty-icon">📋</div>No sessions yet.<br>Complete a workout to see history.</div>';return;}
-  document.getElementById('p-history').innerHTML=`<div style="font-size:12px;color:var(--text2);margin-bottom:12px">${sessions.length} total sessions</div>`+sessions.map(s=>{
+  document.getElementById('p-history').innerHTML=`<div style="font-size:12px;color:var(--text2);margin-bottom:12px">${sessions.length} total sessions · Tap any session to edit it</div>`+sessions.map(s=>{
     const notes=s.comments?Object.entries(s.comments).filter(([,v])=>v).map(([,v])=>`<div class="hist-comment">📝 ${v}</div>`).join(''):'';
     const genNote=s.sessionNote?`<div class="hist-note">🗒 ${s.sessionNote}</div>`:'';
-    return`<div class="hist-item"><div class="hist-hdr"><div class="hist-date">${new Date(s.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div><div class="hist-type">${s.type}</div></div><div class="hist-sum">${s.exCount} exercises · ${new Date(s.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div>${genNote}${notes}</div>`;
+    return`<div class="hist-item" onclick="editSession(${s._idx})"><div class="hist-hdr"><div class="hist-date">${new Date(s.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div><div class="hist-type">${s.type}</div></div><div class="hist-sum">${s.exCount} exercises · ${new Date(s.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</div>${genNote}${notes}<div class="hist-edit-hint">Tap to edit ✏️</div></div>`;
   }).join('');
 }
 
-const EX_NAMES={'wu0':'Leg swings','wu1':'Hip circles','wu2':'Cat camels','wu3':'Squat sky reaches','wu4':'Wrist prep','wu5':'Dead bug warmup','b10':'Tibialis raises — standing','b11':'Tibialis raises — seated','b12':'Patrick step','b13':'Isometric knee hold','sq0':'ATG split squat / Hack squat','rdl0':'Single leg RDL / Barbell RDL','b20':'Pull ups / Pike push ups','b21':'TRX rows / Dips','b30':'Dead bug','b31':'Copenhagen plank','b32':'Hyperextensions','b33':'Glute bridge / hip thrust','sk0':'Wrist warm up','sk1':'L-sit — both legs','sk2':'L-sit — single leg','fa0':'Wrist curls','fa1':'Reverse wrist curls','fa2':'Wrist rotation','fa3':'Brachioradialis raises','fa4':'Farmers hold','cf0':'Calf raise — straight','cf1':'Calf raise — inward','cf2':'Calf raise — outward','cf3':'Calf raise — bilateral','cf4':'Calf raise — bodyweight','alt0':'Bent knee calf / Hip flexor KB','gl0':'Lateral band walks','ad0':'Adductor pull','hi0':'HIIT — Spin bike','ba0':'Basketball','cy0':'Steady cycling','st0':'Couch stretch','st1':'Tibialis stretch','st2':'Elephant stretch','st3':'90/90 hip stretch','st4':'Calf stretch','st5':'Plantar fascia','st6':'Doorway stretch','st7':'Shoulder dislocates','st8':'Dead hang'};
+const EX_NAMES={'wu0':'Leg swings','wu1':'Hip circles','wu2':'Cat camels','wu3':'Squat sky reaches','wu4':'Wrist prep','wu5':'Dead bug warmup','b10':'Tibialis raises — standing','b11':'Tibialis raises — seated','b12':'Patrick step','b13':'Isometric knee hold','sq_atg':'ATG split squat','sq_hack':'Hack squat','rdl_single':'Single leg RDL','rdl_barbell':'Barbell RDL','b20':'Pull ups / Pike push ups','b21':'TRX rows / Dips','b30':'Dead bug','b31':'Copenhagen plank','b32':'Hyperextensions','b33':'Glute bridge / hip thrust','sk0':'Wrist warm up','sk1':'L-sit — full hold','sk2':'L-sit — single leg','fa0':'Wrist curls','fa1':'Reverse wrist curls','fa2':'Wrist rotation','fa3':'Brachioradialis raises','fa4':'Farmers hold','cf0':'Calf raise — straight','cf1':'Calf raise — inward','cf2':'Calf raise — outward','cf3':'Calf raise — bilateral','cf4':'Calf raise — bodyweight','alt_calf':'Bent knee calf raise','alt_hipflexor':'Hip flexor KB raise','gl0':'Lateral band walks','ad0':'Adductor pull','hi0':'HIIT — Spin bike','ba0':'Basketball','cy0':'Steady cycling','st0':'Couch stretch','st1':'Tibialis stretch','st2':'Elephant stretch','st3':'90/90 hip stretch','st4':'Calf stretch','st5':'Plantar fascia','st6':'Doorway stretch','st7':'Shoulder dislocates','st8':'Dead hang'};
 
 let chartRange='all';let chartExId='';
 
@@ -508,10 +579,10 @@ function renderChartContent(){
   function makeLine(vals){const min=Math.min(...vals),max=Math.max(...vals);const range=max-min||1;const pts=vals.map((v,i)=>{const x=PL+(n===1?chartW/2:i*chartW/(n-1));const y=PT+chartH-(v-min)/range*chartH;return{x,y,v};});const path=pts.map((p,i)=>(i===0?`M${p.x},${p.y}`:`L${p.x},${p.y}`)).join(' ');const dots=pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3" fill="currentColor"><title>${p.v}</title></circle>`).join('');const yLabels=[min,max].map(v=>{const y=PT+chartH-(v-min)/range*chartH;return`<text x="${PL-4}" y="${y+4}" text-anchor="end" class="chart-axis-label">${v}</text>`;}).join('');return{path,dots,yLabels};}
   let svgContent='';const xLabels=dataPoints.map((d,i)=>{const x=PL+(n===1?chartW/2:i*chartW/(n-1));return`<text x="${x}" y="${H-4}" text-anchor="middle" class="chart-axis-label">${d.label}</text>`;}).join('');
   const grid=[0.25,0.5,0.75,1].map(p=>`<line x1="${PL}" y1="${PT+chartH*(1-p)}" x2="${W-PR}" y2="${PT+chartH*(1-p)}" stroke="#2e3248" stroke-width="0.5"/>`).join('');
-  if(hasWeight){const wLine=makeLine(dataPoints.map(d=>d.w));svgContent+=`<path d="${wLine.path}" class="chart-line-weight"/><g style="color:#4f8ef7">${wLine.dots}</g>${wLine.yLabels}`;}
-  if(hasReps){const rLine=makeLine(dataPoints.map(d=>d.r));svgContent+=`<path d="${rLine.path}" class="chart-line-reps" stroke-dasharray="${hasWeight?'4,3':'none'}"/><g style="color:#3ecf8e">${rLine.dots}</g>`;}
-  const legend=(hasWeight?`<div class="chart-legend-item"><div class="chart-legend-dot" style="background:#4f8ef7"></div>Weight (lb)</div>`:'')+(hasReps?`<div class="chart-legend-item"><div class="chart-legend-dot" style="background:#3ecf8e"></div>Reps${hasWeight?' (dashed)':''}</div>`:'');
-  el.innerHTML=`<div class="chart-wrap"><div class="chart-title">${EX_NAMES[chartExId]||chartExId} — Progression</div><svg viewBox="0 0 ${W} ${H}" width="100%" style="overflow:visible">${grid}${xLabels}${svgContent}</svg><div class="chart-legend">${legend}</div></div>`;
+  if(hasWeight){const wLine=makeLine(dataPoints.map(d=>d.w));svgContent+=`<path d="${wLine.path}" stroke="#4f8ef7" stroke-width="2" fill="none"/><g style="color:#4f8ef7">${wLine.dots}</g>${wLine.yLabels}`;}
+  if(hasReps){const rLine=makeLine(dataPoints.map(d=>d.r));svgContent+=`<path d="${rLine.path}" stroke="#3ecf8e" stroke-width="2" fill="none" stroke-dasharray="${hasWeight?'4,3':'none'}"/><g style="color:#3ecf8e">${rLine.dots}</g>`;}
+  const legend=(hasWeight?`<div class="chart-legend-item" style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)"><div style="width:8px;height:8px;border-radius:50%;background:#4f8ef7"></div>Weight (lb)</div>`:'')+(hasReps?`<div class="chart-legend-item" style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)"><div style="width:8px;height:8px;border-radius:50%;background:#3ecf8e"></div>Reps${hasWeight?' (dashed)':''}</div>`:'');
+  el.innerHTML=`<div class="chart-wrap"><div class="chart-title">${EX_NAMES[chartExId]||chartExId} — Progression</div><svg viewBox="0 0 ${W} ${H}" width="100%" style="overflow:visible">${grid}${xLabels}${svgContent}</svg><div style="display:flex;gap:12px;margin-top:8px">${legend}</div></div>`;
 }
 
 function renderVolumeChart(){
@@ -545,13 +616,13 @@ async function sendMsg(){
   const cw=document.getElementById('chatWrap');if(cw){cw.innerHTML+=`<div class="msg-user">${msg}</div><div class="msg-coach" id="loading" style="color:var(--text2);font-style:italic">Thinking...</div>`;cw.scrollTop=cw.scrollHeight;}
   const btn=document.getElementById('chatSend');if(btn)btn.disabled=true;
   const recent=ST.sessions.slice(-10).map(s=>`${new Date(s.date).toLocaleDateString()} — ${s.type} — ${s.exCount} exercises`).join('\n');
-  const sys=`You are a direct personal training coach for someone recovering from ACL reconstruction (3 years post-op, graft fully mature). Goal: lean bulk, strength over size. Fasting 16:8. HIIT at 8am fasted. Collagen+vit C on training days only, pre-workout at 7:15am.
-PHASE: Weeks 5–8. Training alt: ${ST.trainAltIndex} (${altV()} today). Off day alt: ${ST.offAltIndex} (${offAltV()} today).
-TRAINING — B1: Tibialis raises, Patrick step 6" + isometric hold (tendon conditioning, not counted as training volume), Alt: ATG split squat progressing 18→12" platform ACL leg forward w/ 2sec pause(A)/Hack squat 10lb(B), Alt: Single leg RDL 20lb(A)/Barbell RDL 60-80lb(B). B2 Alt: A=Pull ups FULLY UNASSISTED superset with TRX rows, B=Pike push ups + Dips. B3: Dead bug 20lb + Copenhagen plank + Hyperextensions (incl isometric cantilever 40sec) + NEW glute bridge/hip thrust.
-OFF DAYS: Basketball days = basketball FIRST then skill/accessory. Stretch days = cycling FIRST then stretch. L-sit 20sec+10 raises. Forearm: wrist curls, reverse curls, wrist rotation, brachioradialis raises, farmers hold 53lb each hand. Calf: NEW 5-set structure — 3 angles (straight/inward/outward) single leg 90lb, bilateral 180lb finisher, bodyweight endurance set 20-25 reps. Alt: bent knee calf(A)/hip flexor KB(B). NEW: lateral band walks (glute med, band above knees) and adductor cable/band pulls added for knee valgus prevention.
-BESTS: Pull ups fully unassisted, dips 5 BW, hack squat 10lb, barbell RDL 80lb/8, L-sit both legs 20sec+10raises, farmers 53lb each/40sec.
-ACL: ACL leg first always. Vastus lateralis mild weakness ACL side — reassess week 8.
-GOALS: Muscle up, handstand, archer push ups, full L-sit.
+  const sys=`You are a direct personal training coach for someone recovering from ACL reconstruction (3 years post-op, graft fully mature). Goal: lean bulk, strength over size. Fasting 16:8. HIIT at 8am fasted. Collagen+vit C on training days only, 7:15am pre-workout.
+PHASE: Weeks 5–8+. Training alt: ${ST.trainAltIndex} (${altV()} today). Off day alt: ${ST.offAltIndex} (${offAltV()} today).
+TRAINING — B1: Tibialis raises, Patrick step (currently 4" platform, reduced reps, actively correcting hip squaring — sit straight down not back, torso tall) + isometric knee hold. Alt: ATG split squat progressing independently(A)/Hack squat progressing independently(B). Alt: Single leg RDL(A)/Barbell RDL climbing 25-30lb(B). B2: Pull ups FULLY UNASSISTED, working toward even set distribution (currently 5-4-4-2 pattern across 4 sets to hit 15 total, target 3 even sets) superset TRX rows. B3: Dead bug + Copenhagen plank (full extension, bottom leg bent lifted running position, NOT resting on floor) + Hyperextensions + glute bridge/hip thrust.
+OFF DAYS: Basketball first on basketball days, cycling first on stretch days. L-sit: MILESTONE — first full unsupported hold achieved, both legs straight feet off ground, 3x1sec, building duration slowly. Forearm: wrist curls, reverse curls, farmers hold 53lb+ each hand (up to 90lb/4reps PR). Wrist rotation and brachioradialis raises PAUSED 1 week due to mild elbow pain near upper forearm. Calf: 5-set structure, weights climbing (110lb per angle, 230lb bilateral). Glute band walks progressed to mid-foot placement (ahead of schedule). Adductor pulls added.
+ACL KNEE: Self-reported noticeably stronger approaching week 8. Patrick step hip squaring actively being corrected — do not add plyometrics or increase Patrick step height/reps until this is resolved.
+GOALS: Muscle up, handstand, archer push ups, full L-sit duration, tempo pull ups (once even set distribution achieved).
+PENDING: Week 8 vastus lateralis reassessment gates plyometric introduction and any rep-range/load periodization changes to leg work.
 SESSIONS:\n${recent||'None yet.'}
 Direct, specific, under 200 words.`;
   try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ST.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:sys,messages:ST.chat.map(m=>({role:m.r==='u'?'user':'assistant',content:m.c}))})});const data=await res.json();const reply=data.content?.[0]?.text||'Something went wrong.';ST.chat.push({r:'a',c:reply});persist();}catch(e){ST.chat.push({r:'a',c:'Connection error. Check your API key.'});persist();}
@@ -570,12 +641,24 @@ function renderSettings(){
 
 function setPhase(i){ST.phase=i;persist();renderSettings();}
 function saveApiSett(){const k=document.getElementById('settKey')?.value.trim();if(!k)return;ST.apiKey=k;persist();alert('API key saved.');}
-function exportJSON(){const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify({state:ST,session:SESS},null,2));a.download='grind_'+new Date().toISOString().split('T')[0]+'.json';a.click();}
-function exportReport(){const lines=['Grind Report',new Date().toLocaleString(),'','Sessions: '+ST.sessions.length,'','=== HISTORY ==='];ST.sessions.forEach(s=>lines.push(new Date(s.date).toLocaleDateString()+' — '+s.type+' — '+s.exCount+' exercises'+(s.sessionNote?' — Note: '+s.sessionNote:'')));const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(lines.join('\n'));a.download='grind_report_'+new Date().toISOString().split('T')[0]+'.txt';a.click();}
+
+// Blob-based export — reliable on iOS Safari home screen web apps, unlike raw data: URI links
+function downloadBlob(content, filename, mime){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function exportJSON(){downloadBlob(JSON.stringify({state:ST,session:SESS},null,2),'grind_'+new Date().toISOString().split('T')[0]+'.json','application/json');}
+function exportReport(){const lines=['Grind Report',new Date().toLocaleString(),'','Sessions: '+ST.sessions.length,'','=== HISTORY ==='];ST.sessions.forEach(s=>lines.push(new Date(s.date).toLocaleDateString()+' — '+s.type+' — '+s.exCount+' exercises'+(s.sessionNote?' — Note: '+s.sessionNote:'')));downloadBlob(lines.join('\n'),'grind_report_'+new Date().toISOString().split('T')[0]+'.txt','text/plain');}
 function copyData(){navigator.clipboard?.writeText(JSON.stringify({state:ST,session:SESS},null,2)).then(()=>alert('Copied.')).catch(()=>alert('Use Export JSON.'));}
 function triggerImport(){document.getElementById('importFile')?.click();}
 function importData(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=function(e){try{const d=JSON.parse(e.target.result);if(d.state)ST={...ST,...d.state};if(d.session?.active)SESS={...SESS,...d.session};persist();renderSettings();renderDash();alert('Imported. '+ST.sessions.length+' sessions restored.');}catch(err){alert('Import failed.');}};r.readAsText(file);}
-function clearData(){if(!confirm('Clear all session data?'))return;ST.sessions=[];ST.chat=[];ST.trainAltIndex=0;ST.offAltIndex=0;SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,sessionNote:''};extraSets={};removedSets={};persist();renderSettings();renderDash();alert('Cleared.');}
+function clearData(){if(!confirm('Clear all session data?'))return;ST.sessions=[];ST.chat=[];ST.trainAltIndex=0;ST.offAltIndex=0;SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,sessionNote:''};extraSets={};removedSets={};editingIndex=null;persist();renderSettings();renderDash();alert('Cleared.');}
 
 loadData();
 renderDash();
