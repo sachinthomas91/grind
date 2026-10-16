@@ -197,8 +197,8 @@ const PROG={
     {n:'Tibialis raises — standing',m:'1×15–20 reps',s:1,r:18,w:0,note:'Activation set. Standing wall version. Toes up.'},
     {n:'Tibialis raises — seated weighted',m:'2×10–12 reps',s:2,r:10,w:15,note:'Leg straight extended. 15lb on foot or shin.'},
   ],
-  patrick:{n:'Patrick step — elevated platform',m:'3×6–8 each leg',s:3,r:6,w:0,acl:true,note:'8 inch platform. Post-break: proceed cautiously first 1-2 sessions, watch for shaking/fatigue signal, do this early while fresh. 3 sets stays permanent long-term — this is tendon-conditioning work, not pure strength volume.'},
-  isoHold:{n:'Isometric knee forward hold',m:'3 holds × 5 sec each leg',s:3,r:5,w:0,acl:true,note:'Max effort 5-sec push. Not counted as full training volume — tendon conditioning, not hypertrophy work.'},
+  patrick:{n:'Patrick step — elevated platform',m:'3×6 each leg',s:3,r:6,w:25,acl:true,note:'6 inch platform (8 inch was too much). Sit straight down, not back; hips square, heel flat. Post-break: proceed cautiously first 1-2 sessions, watch for shaking/fatigue signal, do this early while fresh. 3 sets stays permanent long-term — this is tendon-conditioning work, not pure strength volume.'},
+  isoHold:{n:'Isometric knee forward hold',m:'3 holds × 15–20 sec each leg',s:3,r:15,w:0,acl:true,note:'Hold 15–20 sec at a true 90° knee bend. Not counted as full training volume — tendon conditioning, not hypertrophy work.'},
   sqA:{n:'ATG split squat',m:'3×8 each leg',s:3,r:8,w:0,acl:true,alt:'A',id:'sq_atg',note:'ACL leg forward on platform. 3 sets stays permanent (rehab/tendon role). Post-break: proceed cautiously, watch for fatigue signal first 1-2 sessions.'},
   sqB:{n:'Hack squat (Hackenschmidt)',m:'2×6–8 reps',s:2,r:6,w:35,alt:'B',id:'sq_hack',note:'2 sets now (down from 3) — primary bilateral strength lift, fewer higher-intent sets. KB behind legs, 4 sec down, 1 hold, drive up. Cue outer quad on ACL leg.'},
   sqC:{n:'Goblet squat — front loaded, heels elevated',m:'2×8–10 reps',s:2,r:8,w:0,alt:'C',id:'sq_goblet',note:'NEW — Day C. Kettlebell held at chest, heels on a barbell plate. Front-loading + heel elevation = more upright torso, different angle than Hack squat. 2 sets — bilateral strength lift, same category as Hack squat.'},
@@ -206,12 +206,12 @@ const PROG={
   rdlB:{n:'Barbell RDL',m:'2×8 reps',s:2,r:8,w:80,alt:'B',id:'rdl_barbell',note:'2 sets now (down from 3). Bilateral. 3 sec down. Never round lower back.'},
   nordic:{n:'Nordic curl',m:'2–3×3–6 reps',s:3,r:4,w:0,alt:'C',id:'nordic_curl',note:'NEW — Day C, replaces RDL that day only (RDL stays 2x/week on Days A and B). Assisted or partial-range only to start (band-assisted, or stop at 30-45°). Closes the knee-flexion hamstring gap RDL cannot train. Progress range gradually, same deliberate approach as Patrick step depth.'},
   b2A:[
-    {n:'Pull ups',m:'3–4 sets to 15 total reps',s:4,r:5,w:0,superset:true,note:'SUPERSET with TRX rows. Fully unassisted. Working toward even set distribution — try longer rest (2–2.5 min) between sets.'},
-    {n:'TRX rows',m:'3×8–10 reps',s:3,r:8,w:0,superset:true,note:'SUPERSET with pull ups — immediately after pull ups each round.'},
+    {id:'pullups',n:'Pull ups',m:'3–4 sets to 15 total reps',s:4,r:5,w:0,superset:true,note:'SUPERSET with TRX rows. Fully unassisted. Working toward even set distribution — try longer rest (2–2.5 min) between sets.'},
+    {id:'trx_rows',n:'TRX rows',m:'3×8–10 reps',s:3,r:8,w:0,superset:true,note:'SUPERSET with pull ups — immediately after pull ups each round.'},
   ],
   b2B:[
-    {n:'Pike push ups',m:'3×5–8 reps',s:3,r:6,w:0,note:'Hips high, head toward floor. Handstand foundation base.'},
-    {n:'Dips — progressive',m:'3 sets',s:3,r:8,w:0,note:'Progressing toward weighted.'},
+    {id:'pike_pushups',n:'Pike push ups',m:'3×5–8 reps',s:3,r:6,w:0,note:'Hips high, head toward floor. Handstand foundation base.'},
+    {id:'dips',n:'Dips — progressive',m:'3 sets',s:3,r:8,w:0,note:'Progressing toward weighted.'},
   ],
   b3:[
     {n:'Dead bug with weight',m:'3×10 reps',s:3,r:10,w:20,note:'Both legs extended. Lower back FLAT throughout.'},
@@ -244,9 +244,9 @@ const PROG={
   adductor:[{n:'Cable/band adductor pull',m:'2–3×12–15 reps',s:3,r:14,w:0,acl:true,note:'STILL INCONSISTENT — barely logged in Phase 2. Full range dynamic loading, complements Copenhagen plank.'}],
   plyo:[
     {n:'Pogo hops',m:'2×6–8 reps',s:2,r:6,w:0,note:'NEW — Saturday only. Ankle-driven, minimal knee bend, low amplitude. First exercise in the plyo block — establishes rhythm.'},
-    {n:'Low box step-downs',m:'2×6–8 each leg',s:2,r:6,w:0,acl:true,note:'NEW — controlled single-leg landing practice, low height, minimal real impact. ACL leg first. Do not start until Patrick step and ATG split squat have both shown 1-2 clean, fatigue-free sessions post-break.'},
+    {n:'Depth drop',m:'2×6',s:2,r:6,w:0,acl:true,note:'NEW — step off a 6–8" box, land softly on two feet and hold 2 sec. Low impact landing practice. ACL leg first. Do not start until Patrick step and ATG split squat have both shown 1-2 clean, fatigue-free sessions post-break.'},
     {n:'Lateral bounds — small range',m:'2×6–8 each side',s:2,r:6,w:0,acl:true,note:'NEW — introduces cutting-plane, side-to-side demand basketball uses. Keep range small to start.'},
-    {n:'Ankle hops',m:'2×8–10 reps',s:2,r:8,w:0,note:'NEW — small, quick, low-amplitude hops from the ankle only, minimal knee bend. Session-closer for the plyo block.'},
+    {n:'Line hops',m:'2×8–10 reps',s:2,r:8,w:0,note:'NEW — two-foot hops side-to-side or forward-back over a line. Small, quick, low amplitude. Session-closer for the plyo block.'},
   ],
   hiit:[{n:'HIIT — Spin bike (Johnny G Spirit)',m:'~10 min total',note:'2 min warmup → 6 rounds 20/40 → 1 min cool down. Fasted.'}],
   ball:[{n:'Basketball — Option 2',m:'20–30 min',note:'70% shooting, 30% movement drills including Mikan drill.'}],
@@ -279,8 +279,45 @@ function trainVariant(){
 }
 function offAltV(){return ST.offAltIndex%2===0?'A':'B';}
 
+
+const SCHEMA=8;
+function migrateState(state){
+  if(!state||!Array.isArray(state.sessions))return state;
+  if((state.schemaVersion||0)>=SCHEMA)return state;
+  const PROPER_LSIT=new Date('2026-07-31T00:00:00Z').getTime();
+  const mv=(o,from,to)=>{if(o&&o[from]!==undefined){if(o[to]===undefined)o[to]=o[from];delete o[from];}};
+  state.sessions.forEach(s=>{
+    s.exData=s.exData||{};s.comments=s.comments||{};
+    const v=s.dayVariant;const proper=new Date(s.date).getTime()>=PROPER_LSIT;
+    [s.exData,s.comments].forEach(o=>{
+      mv(o,'b12','patrick');mv(o,'b13','isoHold');
+      if(proper)mv(o,'sk1','lsit');
+      if(v==='A'){mv(o,'b20','pullups');mv(o,'b21','trx_rows');}
+      else if(v==='B'||v==='C'){mv(o,'b20','pike_pushups');mv(o,'b21','dips');}
+    });
+    const old=s.exData.fa5;
+    if(old&&Array.isArray(old.sets)){old.sets.forEach((st,i)=>{if(i<5){const k='cf'+i;if(s.exData[k]===undefined)s.exData[k]={sets:[st],done:!!old.done};}});delete s.exData.fa5;}
+    const f=s.exData.fa4;if(f&&Array.isArray(f.sets))f.sets.forEach(st=>{if(String(st.w)==='406')st.w='106';});
+  });
+  state.phase=3;state.schemaVersion=SCHEMA;return state;
+}
+function getAutofill(exId){
+  for(let i=ST.sessions.length-1;i>=0;i--){
+    if(editingIndex!==null&&i>=editingIndex)continue;
+    const d=ST.sessions[i].exData&&ST.sessions[i].exData[exId];
+    if(!d||!Array.isArray(d.sets))continue;
+    const real=d.sets.filter(x=>(parseFloat(x.r)||0)>0||(parseFloat(x.w)||0)>0);
+    if(!real.length)continue;
+    const best=real.reduce((b,x)=>{const w=parseFloat(x.w)||0,bw=parseFloat(b.w)||0;const r=parseInt(x.r)||0,br=parseInt(b.r)||0;return(w>bw||(w===bw&&r>br))?x:b;});
+    let r=parseInt(best.r)||0,w=parseFloat(best.w)||0;
+    if(!r)r=Math.max(0,...real.map(x=>parseInt(x.r)||0));
+    if(!w)w=Math.max(0,...real.map(x=>parseFloat(x.w)||0));
+    return{r:r||'',w:w||''};
+  }
+  return null;
+}
 function persist(){try{localStorage.setItem(SK,JSON.stringify(ST));}catch(e){}try{localStorage.setItem(SEK,JSON.stringify(SESS));}catch(e){}}
-function loadData(){try{const s=localStorage.getItem(SK);if(s)ST={...ST,...JSON.parse(s)};}catch(e){}try{const s=localStorage.getItem(SEK);if(s){const d=JSON.parse(s);if(d.active)SESS={...SESS,...d};}}catch(e){}}
+function loadData(){try{const s=localStorage.getItem(SK);if(s){try{if(!localStorage.getItem(SK+'_premig'))localStorage.setItem(SK+'_premig',s);}catch(e){}ST={...ST,...JSON.parse(s)};ST=migrateState(ST);persist();}}catch(e){}try{const s=localStorage.getItem(SEK);if(s){const d=JSON.parse(s);if(d.active)SESS={...SESS,...d};}}catch(e){}}
 
 function getLastTwoForExercise(exId){
   const results=[];
@@ -339,6 +376,7 @@ function exCard(ex,id){
   const hasSets=ex.s&&ex.s>0;
   const comment=SESS.setData[`${id}-comment`]||'';
   const prev=prevSessionsHtml(id);
+  const af=getAutofill(id);
   const activeIndices=hasSets?getActiveSetIndices(id,ex.s):[];
 
   let setsHtml='';
@@ -348,7 +386,7 @@ function exCard(ex,id){
       const done=!!SESS.setData[`${id}-${i}-done`];
       const reps=SESS.setData[`${id}-${i}-reps`]||'';
       const wt=SESS.setData[`${id}-${i}-wt`]||'';
-      setsHtml+=`<div class="set-row"><div class="set-num">${displayIdx+1}</div><input class="set-inp" type="number" inputmode="numeric" placeholder="${ex.r||'—'}" value="${reps}" onchange="setVal('${id}',${i},'reps',this.value)"><input class="set-inp" type="number" inputmode="decimal" placeholder="${ex.w!==undefined?ex.w:'—'}" value="${wt}" onchange="setVal('${id}',${i},'wt',this.value)"><button class="set-btn${done?' done':''}" onclick="toggleSetDone('${id}',${i})">${done?'✓':'Done'}</button><button class="set-del" onclick="removeSet('${id}',${i})" title="Remove set">×</button></div>`;
+      setsHtml+=`<div class="set-row"><div class="set-num">${displayIdx+1}</div><input class="set-inp" type="number" inputmode="numeric" placeholder="${af&&af.r!==''?af.r:''}" value="${reps}" onchange="setVal('${id}',${i},'reps',this.value)"><input class="set-inp" type="number" inputmode="decimal" placeholder="${af&&af.w!==''?af.w:''}" value="${wt}" onchange="setVal('${id}',${i},'wt',this.value)"><button class="set-btn${done?' done':''}" onclick="toggleSetDone('${id}',${i})">${done?'✓':'Done'}</button><button class="set-del" onclick="removeSet('${id}',${i})" title="Remove set">×</button></div>`;
     });
     setsHtml+=`<button class="add-set-btn" onclick="addSet('${id}')">+ Add set</button>`;
     setsHtml+=`<div class="timer-row"><div><div class="timer-disp" id="td-${id}">${fmtTime(id)}</div><div class="timer-lbl">Rest timer</div></div><button class="timer-btn${timers[id]?.running?' stop':''}" id="tb-${id}" onclick="toggleTimer('${id}')">${timers[id]?.running?'Stop':timers[id]?.secs===0?'Reset':'Start'}</button></div>`;
@@ -374,7 +412,7 @@ function exCard(ex,id){
 
 function toggleEx(id){const card=document.getElementById('ec-'+id);if(!card)return;const isOpen=card.classList.contains('open');document.querySelectorAll('.ex-card.open').forEach(c=>c.classList.remove('open'));if(!isOpen){card.classList.add('open');card.scrollIntoView({behavior:'smooth',block:'nearest'});}}
 function setVal(id,idx,field,val){SESS.setData[`${id}-${idx}-${field}`]=val;persist();}
-function toggleSetDone(id,idx){const key=`${id}-${idx}-done`;SESS.setData[key]=!SESS.setData[key];persist();renderWorkout();setTimeout(()=>{const c=document.getElementById('ec-'+id);if(c)c.classList.add('open');},50);}
+function toggleSetDone(id,idx){const key=`${id}-${idx}-done`;SESS.setData[key]=!SESS.setData[key];if(SESS.setData[key]){const af=getAutofill(id);if(af){const rk=`${id}-${idx}-reps`,wk=`${id}-${idx}-wt`;if(!SESS.setData[rk]&&af.r!=='')SESS.setData[rk]=String(af.r);if(!SESS.setData[wk]&&af.w!=='')SESS.setData[wk]=String(af.w);}}persist();renderWorkout();setTimeout(()=>{const c=document.getElementById('ec-'+id);if(c)c.classList.add('open');},50);}
 function addSet(id){extraSets[id]=(extraSets[id]||0)+1;renderWorkout();setTimeout(()=>{const c=document.getElementById('ec-'+id);if(c)c.classList.add('open');},50);}
 function removeSet(id,idx){if(!removedSets[id])removedSets[id]=[];removedSets[id].push(idx);delete SESS.setData[`${id}-${idx}-reps`];delete SESS.setData[`${id}-${idx}-wt`];delete SESS.setData[`${id}-${idx}-done`];persist();renderWorkout();setTimeout(()=>{const c=document.getElementById('ec-'+id);if(c)c.classList.add('open');},50);}
 function markDone(id){SESS.exDone[id]=true;persist();const card=document.getElementById('ec-'+id);if(card){card.classList.add('done');card.classList.remove('open');const ck=card.querySelector('.ex-check');if(ck)ck.innerHTML='<span style="color:#fff;font-size:11px">✓</span>';}const dot=document.querySelector(`[data-ex="${id}"]`);if(dot)dot.classList.add('done');}
@@ -431,7 +469,7 @@ function cancelEdit(){
 
 function collectExData(){
   const exData={};
-  const allExIds=['wu0','wu1','wu2','wu3','wu4','wu5','b10','b11','patrick','isoHold','sq_atg','sq_hack','sq_goblet','rdl_single','rdl_barbell','nordic_curl','b20','b21','b30','b31','b32','b33','lsit','handstand','fa0','fa1','fa2','fa3','fa4','cf0','cf1','cf2','cf3','cf4','cfTrim0','alt_calf','alt_hipflexor','gl0','ad0','py0','py1','py2','py3','hi0','ba0'];
+  const allExIds=[...new Set([...Object.keys(SESS.exDone),...Object.keys(SESS.setData).map(k=>k.split('-')[0])])].filter(Boolean);
   allExIds.forEach(id=>{
     const sets=[];
     for(let i=0;i<25;i++){const reps=SESS.setData[`${id}-${i}-reps`];const wt=SESS.setData[`${id}-${i}-wt`];const done=SESS.setData[`${id}-${i}-done`];if(reps||wt||done)sets.push({r:reps||'',w:wt||'',done:!!done});}
@@ -521,7 +559,7 @@ function renderWorkout(){
     const hamEx = dv==='C'?PROG.nordic:dv==='A'?PROG.rdlA:PROG.rdlB;
     const hamId = dv==='C'?'nordic_curl':dv==='A'?'rdl_single':'rdl_barbell';
     html+=exCard(hamEx,hamId);
-    html+=bsep('Block 2 — Upper body');(dv==='A'?PROG.b2A:PROG.b2B).forEach((e,i)=>html+=exCard(e,'b2'+i));
+    html+=bsep('Block 2 — Upper body');(dv==='A'?PROG.b2A:PROG.b2B).forEach(e=>html+=exCard(e,e.id));
     html+=bsep('Block 3 — Core + Glutes');PROG.b3.forEach((e,i)=>html+=exCard(e,'b3'+i));
   } else if(dt==='ball'){
     html+=bsep('Basketball');PROG.ball.forEach((e,i)=>html+=exCard(e,'ba'+i));
@@ -538,7 +576,7 @@ function renderWorkout(){
     html+=bsep('Glutes and adductors');PROG.glute.forEach((e,i)=>html+=exCard(e,'gl'+i));PROG.adductor.forEach((e,i)=>html+=exCard(e,'ad'+i));
     html+=bsep('HIIT');PROG.hiit.forEach((e,i)=>html+=exCard(e,'hi'+i));
   } else if(dt==='stretch'){
-    html+=`<div class="gate-banner"><div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:4px">⚠️ Plyo gating condition</div><div style="font-size:12px;color:var(--text2)">Do not begin box step-downs and lateral bounds until Patrick step and ATG split squat have both shown 1-2 clean, fatigue-free sessions post-break. Pogo hops and ankle hops are lower-risk and can start sooner if unsure.</div></div>`;
+    html+=`<div class="gate-banner"><div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:4px">⚠️ Plyo gating condition</div><div style="font-size:12px;color:var(--text2)">Do not begin depth drops and lateral bounds until Patrick step and ATG split squat have both shown 1-2 clean, fatigue-free sessions post-break. Pogo hops and line hops are lower-risk and can start sooner if unsure.</div></div>`;
     html+=bsep('Plyo — Saturday only');PROG.plyo.forEach((e,i)=>html+=exCard(e,'py'+i));
     html+=bsep('Calf — trimmed (placed right after plyo)');PROG.calfTrimmed.forEach((e,i)=>html+=exCard(e,'cfTrim'+i));
     html+=bsep('Forearm');PROG.forearm.forEach((e,i)=>html+=exCard(e,'fa'+i));
@@ -567,14 +605,14 @@ function renderHistory(){
   }).join('');
 }
 
-const EX_NAMES={'wu0':'Leg swings','wu1':'Hip circles','wu2':'Cat camels','wu3':'Squat sky reaches','wu4':'Wrist prep','wu5':'Dead bug warmup','b10':'Tibialis raises — standing','b11':'Tibialis raises — seated','patrick':'Patrick step','isoHold':'Isometric knee hold','sq_atg':'ATG split squat','sq_hack':'Hack squat','sq_goblet':'Goblet squat','rdl_single':'Single leg RDL','rdl_barbell':'Barbell RDL','nordic_curl':'Nordic curl','b20':'Pull ups / Pike push ups','b21':'TRX rows / Dips','b30':'Dead bug','b31':'Copenhagen plank','b32':'Hyperextensions','b33':'Glute bridge / hip thrust','lsit':'L-sit maintenance','handstand':'Wall handstand hold','fa0':'Wrist curls','fa1':'Reverse wrist curls','fa2':'Wrist rotation','fa3':'Brachioradialis raises','fa4':'Farmers hold','cf0':'Calf raise — straight','cf1':'Calf raise — inward','cf2':'Calf raise — outward','cf3':'Calf raise — bilateral','cf4':'Calf raise — bodyweight','cfTrim0':'Calf raise (Saturday trimmed)','alt_calf':'Bent knee calf raise','alt_hipflexor':'Hip flexor KB raise','gl0':'Lateral band walks','ad0':'Adductor pull','py0':'Pogo hops','py1':'Low box step-downs','py2':'Lateral bounds','py3':'Ankle hops','hi0':'HIIT — Spin bike','ba0':'Basketball'};
+const EX_NAMES={'wu0':'Leg swings','wu1':'Hip circles','wu2':'Cat camels','wu3':'Squat sky reaches','wu4':'Wrist prep','wu5':'Dead bug warmup','b10':'Tibialis raises — standing','b11':'Tibialis raises — seated','patrick':'Patrick step','isoHold':'Isometric knee hold','sq_atg':'ATG split squat','sq_hack':'Hack squat','sq_goblet':'Goblet squat','rdl_single':'Single leg RDL','rdl_barbell':'Barbell RDL','nordic_curl':'Nordic curl','pullups':'Pull ups','trx_rows':'TRX rows','pike_pushups':'Pike push ups','dips':'Dips','sk0':'Cycling (legacy)','sk1':'L-sit (early progression)','sk2':'L-sit raises (legacy)','cy0':'Cycling (legacy)','b12':'Patrick step (old id)','b13':'Isometric hold (old id)','b20':'Upper push/pull (old id)','b21':'Upper push/pull 2 (old id)','b30':'Dead bug','b31':'Copenhagen plank','b32':'Hyperextensions','b33':'Glute bridge / hip thrust','lsit':'L-sit maintenance','handstand':'Wall handstand hold','fa0':'Wrist curls','fa1':'Reverse wrist curls','fa2':'Wrist rotation','fa3':'Brachioradialis raises','fa4':'Farmers hold','cf0':'Calf raise — straight','cf1':'Calf raise — inward','cf2':'Calf raise — outward','cf3':'Calf raise — bilateral','cf4':'Calf raise — bodyweight','cfTrim0':'Calf raise (Saturday trimmed)','alt_calf':'Bent knee calf raise','alt_hipflexor':'Hip flexor KB raise','gl0':'Lateral band walks','ad0':'Adductor pull','py0':'Pogo hops','py1':'Depth drop','py2':'Lateral bounds','py3':'Line hops','hi0':'HIIT — Spin bike','ba0':'Basketball'};
 
 let chartRange='all';let chartExId='';
 
 function getFilteredSessions(range){if(range==='all')return ST.sessions;const weeks=range==='4w'?4:range==='8w'?8:16;const cutoff=new Date();cutoff.setDate(cutoff.getDate()-weeks*7);return ST.sessions.filter(s=>new Date(s.date)>=cutoff);}
 
 function renderCharts(){
-  const exIds=new Set();ST.sessions.forEach(s=>{if(s.exData)Object.keys(s.exData).forEach(k=>exIds.add(k));});
+  const exIds=new Set();ST.sessions.forEach(s=>{if(s.exData)Object.keys(s.exData).forEach(k=>{const d=s.exData[k];if(d&&d.sets&&d.sets.some(x=>(parseFloat(x.r)||0)>0||(parseFloat(x.w)||0)>0))exIds.add(k);});});
   const options=[...exIds].map(id=>`<option value="${id}"${id===chartExId?' selected':''}>${EX_NAMES[id]||id}</option>`).join('');
   document.getElementById('p-charts').innerHTML=`
     <div class="card-title" style="margin-bottom:8px">Progression Charts</div>
@@ -621,7 +659,7 @@ function renderVolumeChart(){
 }
 
 function renderCoach(){
-  const quicks=['Am I ready to progress this week?','Should I start box step-downs yet?','How is handstand progressing?','Should band walks change if still inconsistent?','How is my overall Phase 3 progress?','What should I focus on next session?'];
+  const quicks=['Am I ready to progress this week?','Should I start depth drops yet?','How is handstand progressing?','Should band walks change if still inconsistent?','How is my overall Phase 3 progress?','What should I focus on next session?'];
   const chatHtml=ST.chat.length?ST.chat.map(m=>`<div class="${m.r==='u'?'msg-user':'msg-coach'}">${m.c}</div>`).join(''):'<div class="msg-coach">Hi — I\'m your Grind coach, now in Phase 3. I know your full program, ACL history, current numbers, and goals. Ask me anything.</div>';
   document.getElementById('p-coach').innerHTML=`
     ${!ST.apiKey?`<div class="api-box"><div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:6px">🔑 Add API key to unlock coach</div><div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">Get a free key at console.anthropic.com. Saves locally.</div><input type="password" class="api-inp" id="coachKey" placeholder="sk-ant-..."><button class="api-save" onclick="saveKey()">Save and unlock</button></div>`:`<div style="display:flex;align-items:center;margin-bottom:10px"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px"></span><span style="font-size:12px;color:var(--text2)">Coach connected</span><button onclick="ST.apiKey='';persist();renderCoach();" style="margin-left:auto;background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer">Change key</button></div>`}
@@ -646,8 +684,8 @@ async function sendMsg(){
 PHASE 3 STRUCTURE: Training days rotate A/B/C (not just A/B anymore). Day A: ATG split squat + Single leg RDL + Pull ups/TRX rows superset. Day B: Hack squat + Barbell RDL + Pike push ups/Dips. Day C (NEW): Goblet squat (front-loaded KB, heels elevated) + Nordic curl (replaces RDL that day only, assisted/partial-range, closing the knee-flexion hamstring gap) + upper rotates A/B pattern.
 SET VOLUME CHANGE: Hack squat, Barbell RDL, Single leg RDL, Goblet squat all reduced to 2 sets (down from 3) — primary bilateral/strength lifts, fewer higher-intent sets. Patrick step and ATG split squat STAY AT 3 SETS PERMANENTLY — these are tendon-conditioning/rehab work, not pure strength volume, exempt from the reduction.
 SKILL FOCUS SHIFT: L-sit consolidated to ONE exercise (full hold only, single-leg progression dropped) — now MAINTENANCE only (hold past 10 sec), having plateaued cleanly at 10 sec across 3 sessions. NEW primary skill: wall-supported handstand hold, 3x10sec to start. Muscle-up explicitly shelved/paused, pursued informally outside the program only.
-SATURDAY RESTRUCTURED: Stretching moved OUT of Saturday entirely into its own flexible, on-demand tab — no longer tied to any day. Saturday now: Plyo (pogo hops, low box step-downs, lateral bounds, ankle hops — 2 sets each) → trimmed calf (1-2 sets, right after plyo, shared tendon structures) → forearm (unchanged) → glute/band walks/adductor.
-CRITICAL GATING CONDITION: Box step-downs and lateral bounds (both loading ACL leg with landing/cutting demand) must NOT begin until Patrick step and ATG split squat have shown 1-2 clean, fatigue-free sessions after the Phase 2 break. Pogo hops and ankle hops are lower-risk and more flexible on timing.
+SATURDAY RESTRUCTURED: Stretching moved OUT of Saturday entirely into its own flexible, on-demand tab — no longer tied to any day. Saturday now: Plyo (pogo hops, depth drops, lateral bounds, line hops — 2 sets each) → trimmed calf (1-2 sets, right after plyo, shared tendon structures) → forearm (unchanged) → glute/band walks/adductor.
+CRITICAL GATING CONDITION: Depth drops and lateral bounds (both loading ACL leg with landing/cutting demand) must NOT begin until Patrick step and ATG split squat have shown 1-2 clean, fatigue-free sessions after the Phase 2 break. Pogo hops and line hops are lower-risk and more flexible on timing.
 
 PHASE 2 CLOSING CONTEXT: Phase 2 ended with a clear ACL leg fatigue signal (Sept 21) — Patrick step described as "really hard on the ACL leg, fatigued, shaking, even with a 2-day break," ATG split squat skipped entirely that session. This followed a platform increase to 8" three weeks prior. A one-week break was taken in response — the leg now reports fully recovered, approaching Phase 3 cautiously.
 
@@ -689,7 +727,7 @@ function exportJSON(){downloadBlob(JSON.stringify({state:ST,session:SESS},null,2
 function exportReport(){const lines=['Grind Report',new Date().toLocaleString(),'','Sessions: '+ST.sessions.length,'','=== HISTORY ==='];ST.sessions.forEach(s=>lines.push(new Date(s.date).toLocaleDateString()+' — '+s.type+' — '+s.exCount+' exercises'+(s.sessionNote?' — Note: '+s.sessionNote:'')));downloadBlob(lines.join('\n'),'grind_report_'+new Date().toISOString().split('T')[0]+'.txt','text/plain');}
 function copyData(){navigator.clipboard?.writeText(JSON.stringify({state:ST,session:SESS},null,2)).then(()=>alert('Copied.')).catch(()=>alert('Use Export JSON.'));}
 function triggerImport(){document.getElementById('importFile')?.click();}
-function importData(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=function(e){try{const d=JSON.parse(e.target.result);if(d.state)ST={...ST,...d.state};if(d.session?.active)SESS={...SESS,...d.session};persist();renderSettings();renderDash();alert('Imported. '+ST.sessions.length+' sessions restored.');}catch(err){alert('Import failed.');}};r.readAsText(file);}
+function importData(input){const file=input.files[0];if(!file)return;const r=new FileReader();r.onload=function(e){try{const d=JSON.parse(e.target.result);if(d.state){ST={...ST,...d.state};ST=migrateState(ST);}if(d.session?.active)SESS={...SESS,...d.session};persist();renderSettings();renderDash();alert('Imported. '+ST.sessions.length+' sessions restored.');}catch(err){alert('Import failed.');}};r.readAsText(file);}
 function clearData(){if(!confirm('Clear all session data?'))return;ST.sessions=[];ST.chat=[];ST.trainAltIndex=0;ST.offAltIndex=0;SESS={active:false,exDone:{},setData:{},startTime:null,dayType:null,dayVariant:null,sessionNote:''};extraSets={};removedSets={};editingIndex=null;persist();renderSettings();renderDash();alert('Cleared.');}
 
 loadData();
